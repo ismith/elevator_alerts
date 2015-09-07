@@ -2,30 +2,57 @@ require 'faraday'
 require 'nokogiri'
 
 require 'models'
-require 'alert'
 
-BART_ENDPOINT = 'http://api.bart.gov/api/bsa.aspx?cmd=elev&key=MW9S-E7SL-26DU-VV8V'.freeze
+class ParseError < StandardError; end
 
 class BartApi
+  BART_ENDPOINT = 'http://api.bart.gov/api/bsa.aspx?cmd=elev&key=MW9S-E7SL-26DU-VV8V'.freeze
+
+  # Hit the BART_ENDPOINT, return the salient string
   def self.get_data
     response = Faraday.get(BART_ENDPOINT)
-    body = Nokogiri::XML(r.body)
-    description = body.xpath('//bsa/description')
+    body = Nokogiri::XML(response.body)
+    description = body.xpath('//bsa/description') rescue nil
 
-    if description.nil?
-      Models::Unparsable.create(:data => response)
+    if ( response.status != 200 ||
+         description.nil? ||
+         description.empty? )
+      Models::Unparseable.create(:data => response.body, :status_code => response.status)
       return nil
     end
 
-    str = description.gsub(/<\/?description>/, '')
+    str = description.to_s
+                     .gsub(/<\/?description>/, '')
                      .sub(/<!\[CDATA\[/, '')
                      .sub(/\]\]>/, '')
+                     .gsub(/  */, ' ')
                      .strip
+  end
 
-    alert = Alert.new(str)
+  MATCH_SINGLE = %r{There is (one) elevator out of service at this time: (.*)\.$}.freeze
+  MATCH_MULTIPLE = %r{There are ([^ ]*) elevators out of service at this time: (.*)\.$}.freeze
+  MATCH_NONE = %{There are no elevators out of service at this time.}.freeze
+  SPLIT = %r{( and |, )}.freeze
 
-    # Check for new elevators
-    # Create outage objects
-    # Notifications
+  # Given a string matching one of the three regexes above (MATCH_NONE,
+  # MATCH_SINGLE, MATCH_MULTIPLE), return an array of elevator names which are
+  # currently out of service.  On failure to match, store a Models::Unparseable
+  # and raise a ParseError
+  def self.parse_data(data)
+    data.gsub!(/ *Thank you\./, '')
+
+    case data
+    when MATCH_NONE
+      return []
+    when MATCH_SINGLE
+      return [ data.match(MATCH_SINGLE)[2] ]
+    when MATCH_MULTIPLE
+      return data.match(MATCH_MULTIPLE)[2].split(SPLIT)
+                                          .reject { |s| s =~ SPLIT }
+    else
+      Models::Unparseable.create(:data => data)
+      # TODO handle this
+      raise ParseError, "Could not parse '#{data}'."
+    end
   end
 end

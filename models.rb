@@ -20,7 +20,8 @@ module Models
     include DataMapper::Resource
 
     property :id, Serial, :key => true
-    property :data, String
+    property :data, String, :required => true
+    property :status_code, Integer
 
     timestamps!
   end
@@ -71,7 +72,5 @@ module Models
     DataMapper.repository.adapter.resource_naming_convention =
       DataMapper::NamingConventions::Resource::UnderscoredAndPluralizedWithoutModule
     DataMapper.finalize
-
-    DataMapper.auto_upgrade!
   end
 end

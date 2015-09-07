@@ -13,7 +13,7 @@ describe Models::Elevator do
   it { should respond_to :name }
   it { should respond_to :station }
 
-  it { should respond_to :system }
+  it { should respond_to :systems }
 end
 
 describe Models::Station do
