@@ -25,11 +25,53 @@ module Models
     timestamps!
   end
 
+  # TODO: an elevator may have more than one name
+  class Elevator < Base
+    include DataMapper::Resource
+
+    property :id, Serial, :key => true
+    property :name, String, :index => true, :unique => true
+
+    has 1, :station
+    has n, :systems, :through => :station
+
+    timestamps!
+  end
+
+  class Station < Base
+    include DataMapper::Resource
+
+    property :id, Serial, :key => true
+
+    # TODO a station might have more than one name, e.g. BART/MUNI
+    property :name, String, :index => true, :unique => true
+
+    has n, :elevators, :constraint => :destroy
+    has n, :systems
+
+    timestamps!
+  end
+
+  class System < Base
+    include DataMapper::Resource
+
+    property :id, Serial, :key => true
+
+    property :name, String, :index => true, :unique => true
+
+    has n, :stations, :constraint => :destroy
+    has n, :elevators, :through => :stations, :constraint => :destroy
+
+    timestamps!
+  end
+
   def self.setup
     DataMapper.setup(:default, configatron.database)
     DataMapper::Model.raise_on_save_failure = true
     DataMapper.repository.adapter.resource_naming_convention =
       DataMapper::NamingConventions::Resource::UnderscoredAndPluralizedWithoutModule
     DataMapper.finalize
+
+    DataMapper.auto_upgrade!
   end
 end
