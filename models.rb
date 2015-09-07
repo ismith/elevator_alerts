@@ -35,6 +35,11 @@ module Models
 
     has 1, :station
     has n, :systems, :through => :station
+    has n, :outages
+
+    def self.process_outage(name)
+
+    end
 
     timestamps!
   end
@@ -64,6 +69,23 @@ module Models
     has n, :elevators, :through => :stations, :constraint => :destroy
 
     timestamps!
+  end
+
+  class Outage < Base
+    include DataMapper::Resource
+
+    property :id, Serial, :key => true
+
+    has 1, :elevator
+    has n, :systems, :through => :elevator
+
+    property :started_at, DateTime,
+              :required => true,
+              :default => lambda { |r, p| Time.now.utc.to_datetime }
+
+    property :ended_at, DateTime,
+             :required => false,
+             :index => true
   end
 
   def self.setup
