@@ -3,7 +3,7 @@ require 'nokogiri'
 
 require 'models'
 
-class ParseError < StandardError; end
+class UnparseableError < StandardError; end
 
 class BartApi
   BART_ENDPOINT = 'http://api.bart.gov/api/bsa.aspx?cmd=elev&key=MW9S-E7SL-26DU-VV8V'.freeze
@@ -41,6 +41,7 @@ class BartApi
   def self.parse_data(data)
     raise ArgumentError unless data.is_a? String
     data.gsub!(/ *Thank you\./, '')
+    data.strip!
 
     elevator_strings = case data
     when MATCH_NONE
@@ -53,7 +54,7 @@ class BartApi
     else
       Models::Unparseable.create(:data => data)
       # TODO handle this
-      raise ParseError, "Could not parse '#{data}'."
+      raise UnparseableError, "Could not parse '#{data}'."
     end
   end
 

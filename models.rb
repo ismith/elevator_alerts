@@ -37,13 +37,9 @@ module Models
     property :id, Serial, :key => true
     property :name, String, :index => true, :unique => true
 
-    has 1, :station
-    has n, :systems, :through => :station
-    has n, :outages
-
-    def self.process_outage(name)
-
-    end
+    #has n, :systems, :through => :stations
+    has n, :outages, :through => Resource
+    belongs_to :station, :required => false
 
     timestamps!
   end
@@ -56,32 +52,32 @@ module Models
     # TODO a station might have more than one name, e.g. BART/MUNI
     property :name, String, :index => true, :unique => true
 
-    has n, :elevators, :constraint => :destroy
-    has n, :systems
+    has n, :elevators
+    #has n, :systems, :through => Resource
 
     timestamps!
   end
 
-  class System < Base
-    include DataMapper::Resource
-
-    property :id, Serial, :key => true
-
-    property :name, String, :index => true, :unique => true
-
-    has n, :stations, :constraint => :destroy
-    has n, :elevators, :through => :stations, :constraint => :destroy
-
-    timestamps!
-  end
+#  class System < Base
+#    include DataMapper::Resource
+#
+#    property :id, Serial, :key => true
+#
+#    property :name, String, :index => true, :unique => true
+#
+#    has n, :stations, :through => Resource
+#    has n, :elevators, :through => :stations, :constraint => :destroy
+#
+#    timestamps!
+#  end
 
   class Outage < Base
     include DataMapper::Resource
 
     property :id, Serial, :key => true
 
-    has 1, :elevator
-    has n, :systems, :through => :elevator
+    belongs_to :elevator
+    #has n, :systems, :through => :elevator
 
     property :started_at, DateTime,
               :required => true,
@@ -98,5 +94,7 @@ module Models
     DataMapper.repository.adapter.resource_naming_convention =
       DataMapper::NamingConventions::Resource::UnderscoredAndPluralizedWithoutModule
     DataMapper.finalize
+
+    DataMapper.auto_upgrade! unless ENV['RACK_ENV'] == 'testing'
   end
 end

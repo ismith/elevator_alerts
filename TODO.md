@@ -4,6 +4,8 @@
 [ ] test handler
 [ ] cronjob to run said handler
 
+[ ] seed station list
+
 [ ] notifier code
 [ ] link notifier to outage code using callback hooks
 
