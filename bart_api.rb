@@ -41,7 +41,7 @@ class BartApi
   def self.parse_data(data)
     data.gsub!(/ *Thank you\./, '')
 
-    case data
+    elevator_strings = case data
     when MATCH_NONE
       return []
     when MATCH_SINGLE

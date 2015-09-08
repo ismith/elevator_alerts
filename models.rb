@@ -14,6 +14,10 @@ module Models
                :required => true,
                :default => lambda { |r, p| Time.now.utc.to_datetime }
     end
+
+    def self.first_or_create(opts)
+      first(opts) || create(opts)
+    end
   end
 
   class Unparseable < Base
