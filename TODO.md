@@ -1,6 +1,7 @@
 [x] First-or-create
 
 [x] handler that takes a set of elevator-names and opens/closes outages appropriately
+[ ] test handler
 [ ] cronjob to run said handler
 
 [ ] notifier code

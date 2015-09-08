@@ -39,6 +39,7 @@ class BartApi
   # currently out of service.  On failure to match, store a Models::Unparseable
   # and raise a ParseError
   def self.parse_data(data)
+    raise ArgumentError unless data.is_a? String
     data.gsub!(/ *Thank you\./, '')
 
     elevator_strings = case data
@@ -54,5 +55,14 @@ class BartApi
       # TODO handle this
       raise ParseError, "Could not parse '#{data}'."
     end
+  end
+
+  def self.run!
+    data = self.get_data
+    elevators = self.parse_data(data)
+
+    puts "Currently out of service: #{elevators.join(', ')}."
+
+    return true
   end
 end
