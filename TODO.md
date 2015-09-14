@@ -4,11 +4,11 @@
 [x] test handler^Wworker
 [ ] cronjob to run said handler (AWS SWF)
 
-[ ] seed station list - dump?  Cleverer handling?
-[ ] Strip # and . from elevator names so SFO is handled properly?
+[x] seed station list - dumped as data/seed.sql
+[x] Strip # and . from elevator names so SFO is handled properly?
 
 [ ] notifier code
-[ ] link notifier to outage code using callback hooks
+[x] link notifier to outage code
 [ ] Add admin notifier for errors
 [ ] Add admin notifier for new (stationless) elevators
 

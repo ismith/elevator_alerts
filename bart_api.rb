@@ -26,6 +26,8 @@ class BartApi
                      .sub(/<!\[CDATA\[/, '')
                      .sub(/\]\]>/, '')
                      .gsub(/  */, ' ')
+                     .gsub(%r{\.}, '')
+                     .gsub(/#/, '')
                      .strip
   end
 
