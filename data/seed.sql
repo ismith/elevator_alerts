@@ -1,7 +1,7 @@
-PRAGMA foreign_keys=OFF;
+--PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
-CREATE TABLE "unparseables" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "data" VARCHAR(255) NOT NULL, "status_code" INTEGER, "created_at" TIMESTAMP NOT NULL, "updated_at" TIMESTAMP NOT NULL);
-CREATE TABLE "elevators" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "name" VARCHAR(255), "created_at" TIMESTAMP NOT NULL, "updated_at" TIMESTAMP NOT NULL, "station_id" INTEGER);
+CREATE TABLE "unparseables" ("id" SERIAL PRIMARY KEY, "data" TEXT NOT NULL, "status_code" INTEGER, "created_at" TIMESTAMP NOT NULL, "updated_at" TIMESTAMP NOT NULL);
+CREATE TABLE "elevators" ("id" SERIAL PRIMARY KEY, "name" TEXT, "created_at" TIMESTAMP NOT NULL, "updated_at" TIMESTAMP NOT NULL, "station_id" INTEGER);
 INSERT INTO "elevators" VALUES(1,'12th St Oakland Ogawa Plaza Elevator','2015-09-08T05:48:15+00:00','2015-09-13T18:29:06-07:00',1);
 INSERT INTO "elevators" VALUES(2,'Millbrae SF/EastBay Platform Elevator','2015-09-08T05:48:15+00:00','2015-09-07T22:49:26-07:00',26);
 INSERT INTO "elevators" VALUES(3,'Walnut Creek SF/Millbrae Platform Elevator','2015-09-08T05:48:15+00:00','2015-09-07T22:49:52-07:00',43);
@@ -84,7 +84,7 @@ INSERT INTO "elevators" VALUES(81,'Richmond Platform Elevator','2015-09-08T05:48
 INSERT INTO "elevators" VALUES(82,'San Francisco Airport Platform 3 to Airtrain Elevator','2015-09-08T05:48:15+00:00','2015-09-07T23:26:56-07:00',38);
 INSERT INTO "elevators" VALUES(83,'San Leandro Fremont/Dublin Platform Elevator','2015-09-08T05:48:15+00:00','2015-09-07T23:27:06-07:00',39);
 INSERT INTO "elevators" VALUES(84,'Colma Platform 3 Elevator','2015-09-08T05:48:15+00:00','2015-09-13T18:31:03-07:00',11);
-CREATE TABLE "stations" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "name" VARCHAR(255), "created_at" TIMESTAMP NOT NULL, "updated_at" TIMESTAMP NOT NULL);
+CREATE TABLE "stations" ("id" SERIAL PRIMARY KEY, "name" TEXT, "created_at" TIMESTAMP NOT NULL, "updated_at" TIMESTAMP NOT NULL);
 INSERT INTO "stations" VALUES(1,'12th St Oakland City Center','2015-09-08T05:48:14+00:00','2015-09-13T18:33:12-07:00');
 INSERT INTO "stations" VALUES(2,'16th St Mission','2015-09-08T05:48:14+00:00','2015-09-13T18:33:12-07:00');
 INSERT INTO "stations" VALUES(3,'19th St Oakland','2015-09-08T05:48:14+00:00','2015-09-13T18:33:12-07:00');
@@ -130,11 +130,8 @@ INSERT INTO "stations" VALUES(42,'Union City','2015-09-08T05:48:14+00:00','2015-
 INSERT INTO "stations" VALUES(43,'Walnut Creek','2015-09-08T05:48:14+00:00','2015-09-07T22:51:41-07:00');
 INSERT INTO "stations" VALUES(44,'West Dublin/Pleasanton','2015-09-08T05:48:14+00:00','2015-09-07T22:51:41-07:00');
 INSERT INTO "stations" VALUES(45,'West Oakland','2015-09-08T05:48:15+00:00','2015-09-07T23:33:10-07:00');
-CREATE TABLE "outages" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "started_at" TIMESTAMP NOT NULL, "ended_at" TIMESTAMP, "elevator_id" INTEGER NOT NULL);
+CREATE TABLE "outages" ("id" SERIAL PRIMARY KEY, "started_at" TIMESTAMP NOT NULL, "ended_at" TIMESTAMP, "elevator_id" INTEGER NOT NULL);
 CREATE TABLE "elevator_outages" ("elevator_id" INTEGER NOT NULL, "outage_id" INTEGER NOT NULL, PRIMARY KEY("elevator_id", "outage_id"));
-DELETE FROM sqlite_sequence;
-INSERT INTO "sqlite_sequence" VALUES('stations',45);
-INSERT INTO "sqlite_sequence" VALUES('elevators',84);
 CREATE INDEX "index_elevators_name" ON "elevators" ("name");
 CREATE INDEX "index_elevators_station" ON "elevators" ("station_id");
 CREATE UNIQUE INDEX "unique_elevators_name" ON "elevators" ("name");
