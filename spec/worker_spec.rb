@@ -18,14 +18,14 @@ describe BartWorker do
     end
 
     expect(Models::Outage.all_open.count).to eql predata.size
+
+    allow(BartApi).to receive(:get_data)
+    allow(BartApi).to receive(:parse_data).and_return(data)
   end
 
   # We end with one ended outage (elevator1), one that remains open (elevator2)
   # and one new outage (elevator3)
   it 'should call BartApi, end one of the outages, and open another' do
-    expect(BartApi).to receive(:get_data).and_call_original
-    expect(BartApi).to receive(:parse_data).and_return(data)
-
     subject
 
     # Not sure why the #to_a is required here
@@ -33,5 +33,14 @@ describe BartWorker do
     expect(Models::Outage.all_open.size).to eql data.size
     expect(Models::Outage.all_closed.size).to be 1
     expect(Models::Outage.count).to be 3
+  end
+
+  # elevator1 and elevator3; elevator2 does not change state
+  it 'should call Notifier.send_elevator_notifications with two elevators' do
+    expect(Notifier).to receive(:send_elevator_notifications!) do |elevators|
+      expect(elevators.map(&:name)).to match_array(['elevator1', 'elevator3'])
+    end
+
+    subject
   end
 end
