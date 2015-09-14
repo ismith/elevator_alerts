@@ -10,7 +10,7 @@
 [ ] notifier code
 [x] link notifier to outage code
 [ ] wire up heroku
-  [ ] wire up postgres
+  [x] wire up postgres
   [ ] wire up sendgrid
   [ ] wire up mailtrap?
 [ ] Add admin notifier for errors
