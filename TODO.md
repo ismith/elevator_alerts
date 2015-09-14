@@ -11,8 +11,9 @@
 [x] link notifier to outage code
 [ ] wire up heroku
   [x] wire up postgres
-  [ ] wire up sendgrid
-  [ ] wire up mailtrap?
+  [x] wire up sendgrid
+  [x] wire up mailtrap?
+[ ] fix email sender
 [ ] Add admin notifier for errors
 [ ] Add admin notifier for new (stationless) elevators
 
