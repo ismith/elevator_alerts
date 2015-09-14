@@ -5,6 +5,8 @@ $LOAD_PATH.unshift path
 
 ENV['RACK_ENV']='testing'
 
+require 'pry-debugger'
+
 ::RSpec.configure do |c|
   c.before(:each) do
     Models.setup

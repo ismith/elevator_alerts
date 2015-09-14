@@ -14,7 +14,7 @@ describe Models::Elevator do
   it { should respond_to :name }
   it { should respond_to :station }
 
-  it { should respond_to :systems }
+  #it { should respond_to :systems }
 
   it { should respond_to :outages }
 end
@@ -23,19 +23,19 @@ describe Models::Station do
   subject { described_class.new }
 
   it { should respond_to :name }
-  it { should respond_to :systems }
+  #it { should respond_to :systems }
 
   it { should respond_to :elevators }
 end
 
-describe Models::System do
-  subject { described_class.new }
-
-  it { should respond_to :name }
-
-  it { should respond_to :stations }
-  it { should respond_to :elevators }
-end
+#describe Models::System do
+#  subject { described_class.new }
+#
+#  it { should respond_to :name }
+#
+#  it { should respond_to :stations }
+#  it { should respond_to :elevators }
+#end
 
 describe Models::Outage do
   subject { described_class.new }
@@ -43,9 +43,28 @@ describe Models::Outage do
   it { should respond_to :elevator }
   it { should respond_to :started_at }
   it { should respond_to :ended_at }
-  it { should respond_to :systems }
+  #it { should respond_to :systems }
 
   it 'should have a default started_at value' do
     expect(subject.started_at).not_to be_nil
+  end
+
+  describe '#end!' do
+    subject { outage.end! }
+
+    let(:outage) { described_class.new(:elevator => elevator) }
+    let(:elevator) { Models::Elevator.first_or_create(:name => SecureRandom.hex) }
+
+    it 'should set an ended_at on the Outage' do
+      expect { subject }.to change { outage.reload.ended_at }.from(nil)
+                                                             .to(kind_of(DateTime))
+    end
+  end
+
+  describe 'class methods' do
+    subject { described_class }
+
+    it { should respond_to :all_open }
+    it { should respond_to :all_closed }
   end
 end

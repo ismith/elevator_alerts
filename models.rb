@@ -80,12 +80,25 @@ module Models
     #has n, :systems, :through => :elevator
 
     property :started_at, DateTime,
-              :required => true,
-              :default => lambda { |r, p| Time.now.utc.to_datetime }
+             :required => true,
+             :default => lambda { |r, p| Time.now.utc.to_datetime }
 
     property :ended_at, DateTime,
              :required => false,
              :index => true
+
+    def end!
+      self.ended_at = DateTime.now
+      self.save
+    end
+
+    def self.all_open(opts={})
+      all(opts.merge(:ended_at => nil))
+    end
+
+    def self.all_closed(opts={})
+      all(opts.merge(:ended_at.not => nil))
+    end
   end
 
   def self.setup

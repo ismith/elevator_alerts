@@ -19,18 +19,17 @@ class BartWorker
     puts "New elevators: #{total_count - existing_count}."
     puts "Data: #{data}"
 
-#    # End outages that are over
-#    outages_to_end = Models::Outage.all(:ended_at => nil,
-#                                        :elevator.not => out_elevators)
-#    outages_to_end.each(&:end!)
-#
-#    # Open outaages that need opening
-#    out_elevators.select do |e|
-#      Models::Outage.first(:ended_at => nil,
-#                           :elevator => e).nil?
-#    end.map do |e|
-#      Models::Outage.create(:elevator => e)
-#    end
+    # End outages that are over
+    outages_to_end = Models::Outage.all_open(:elevator.not => out_elevators)
+    outages_to_end.each(&:end!)
+
+    # Open outaages that need opening
+    out_elevators.reject do |e|
+      Models::Outage.first(:ended_at => nil,
+                           :elevator => e)
+    end.map do |e|
+      Models::Outage.create(:elevator => e)
+    end
   end
 end
 
