@@ -17,6 +17,12 @@ describe Models::Elevator do
   #it { should respond_to :systems }
 
   it { should respond_to :outages }
+
+  describe 'class methods' do
+    subject { described_class }
+
+    it { should respond_to :stationless }
+  end
 end
 
 describe Models::Station do

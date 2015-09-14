@@ -42,6 +42,10 @@ module Models
     belongs_to :station, :required => false
 
     timestamps!
+
+    def self.stationless
+      all(:station => nil)
+    end
   end
 
   class Station < Base

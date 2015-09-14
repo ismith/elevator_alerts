@@ -1,1 +1,6 @@
 Setup should be done via the console script, either by hand or scripted.
+
+Periodically, you may wish to check for any newly-discovered Elevator records.
+(That is, elevators reported by the API, but which have not been associated with
+a station.)  To do this, run `Models::Elevator.stationless` from within the
+console.
