@@ -2,7 +2,6 @@
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../'
 
-require 'config'
 require 'models'
 require 'bart_api'
 

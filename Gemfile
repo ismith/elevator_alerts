@@ -2,13 +2,21 @@ source 'https://rubygems.org'
 
 gem 'nokogiri'
 gem 'faraday'
-gem 'rspec'
 
 gem 'datamapper'
-gem 'dm-mysql-adapter'
-gem 'dm-sqlite-adapter'
+gem 'dm-postgres-adapter'
 
 gem 'pry'
-gem 'pry-debugger'
 
-gem 'configatron'
+gem 'mail'
+
+gem 'rake'
+
+group :development do
+  gem 'dm-sqlite-adapter'
+  gem 'pry-debugger'
+end
+
+group :test do
+  gem 'rspec'
+end

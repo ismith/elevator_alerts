@@ -1,5 +1,4 @@
 require 'data_mapper'
-require_relative './config'
 
 DB_STRING_LENGTH=255
 DataMapper::Property::String.length(DB_STRING_LENGTH)
@@ -106,7 +105,11 @@ module Models
   end
 
   def self.setup
-    DataMapper.setup(:default, configatron.database)
+    if ENV['RACK_ENV'] == 'testing'
+      ENV['DATABASE_URL'] = 'sqlite::memory:'
+    end
+
+    DataMapper.setup(:default, ENV['DATABASE_URL'])
     DataMapper::Model.raise_on_save_failure = true
     DataMapper.repository.adapter.resource_naming_convention =
       DataMapper::NamingConventions::Resource::UnderscoredAndPluralizedWithoutModule
