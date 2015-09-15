@@ -21,3 +21,7 @@
 [ ] UI to configure notifications per-user
 
 [ ] shorten elevator names
+
+Maybe:
+[ ] dead man snitch
+[ ] graphite instead of silly Models::Metric
