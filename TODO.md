@@ -2,7 +2,7 @@
 
 [x] handler that takes a set of elevator-names and opens/closes outages appropriately
 [x] test handler^Wworker
-[ ] cronjob to run said handler (AWS SWF)
+[ ] runner for said handler
 
 [x] seed station list - dumped as data/seed.sql
 [x] Strip # and . from elevator names so SFO is handled properly?
@@ -18,3 +18,5 @@
 [ ] Add admin notifier for new (stationless) elevators
 
 [ ] UI to configure notifications per-user
+
+[ ] shorten elevator names
