@@ -13,6 +13,7 @@ describe Models::Elevator do
 
   it { should respond_to :name }
   it { should respond_to :station }
+  it { should respond_to :users }
 
   #it { should respond_to :systems }
 
@@ -36,6 +37,7 @@ describe Models::Station do
   #it { should respond_to :systems }
 
   it { should respond_to :elevators }
+  it { should respond_to :users }
 end
 
 #describe Models::System do
@@ -109,4 +111,12 @@ describe Models::Metric do
       end
     end
   end
+end
+
+describe Models::User do
+  subject { described_class.new }
+
+  it { should respond_to :email }
+  it { should respond_to :elevators }
+  it { should respond_to :stations }
 end

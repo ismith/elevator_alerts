@@ -40,6 +40,8 @@ module Models
     has n, :outages, :through => Resource
     belongs_to :station, :required => false
 
+    has n, :users, :through => :station
+
     after :create do |elevator|
       Models::Metric.incr('elevatorcreate')
 
@@ -66,6 +68,7 @@ module Models
 
     has n, :elevators
     #has n, :systems, :through => Resource
+    has n, :users, :through => Resource
 
     timestamps!
   end
@@ -117,7 +120,7 @@ module Models
     include DataMapper::Resource
 
     property :id, Serial, :key => true
-    property :name, String, :required => true
+    property :name, String, :required => true, :index => true
     property :counter, Integer, :default => 0
 
     # This is *wildly* un-threadsafe
@@ -126,6 +129,16 @@ module Models
       m.counter += 1
       m.save
     end
+  end
+
+  class User < Base
+    include DataMapper::Resource
+
+    property :id, Serial, :key => true
+    property :email, String, :index => true
+
+    has n, :stations, :through => Resource
+    has n, :elevators, :through => :stations
   end
 
   def self.setup
