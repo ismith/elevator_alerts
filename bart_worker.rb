@@ -8,6 +8,7 @@ require 'notifier'
 
 class BartWorker
   def self.run!
+    Models::Metric.incr("bartworker")
     # Get data
 
     existing_count = Models::Elevator.count
@@ -32,6 +33,7 @@ class BartWorker
       Models::Outage.first(:ended_at => nil,
                            :elevator => e)
     end.map do |e|
+      Models::Metric.incr("createoutage")
       outage = Models::Outage.create(:elevator => e)
 
       outages_to_notify << outage

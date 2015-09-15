@@ -23,6 +23,8 @@ class Email
     # Can't find the opentrack setting in sendgrid's web dashboard, so disable it here
     headers = { "X-SMTPAPI" => { :filters => { :opentrack => { :settings => { :enable => 0 } } } }.to_json }
 
+    Models::Metric.incr("email")
+
     Pony.mail(:to => to, :subject => subject, :body => body, :headers => headers)
   end
 end

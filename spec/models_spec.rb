@@ -74,3 +74,35 @@ describe Models::Outage do
     it { should respond_to :all_closed }
   end
 end
+
+describe Models::Metric do
+  subject { described_class.new }
+
+  it { should respond_to :name }
+  it { should respond_to :counter }
+
+  describe 'class methods' do
+    subject { described_class }
+
+    describe '.incr' do
+      subject { described_class.incr(name) }
+
+      let(:name) { SecureRandom.hex }
+
+      context 'on first call' do
+        it 'should create a new record, and set its counter to 1' do
+          subject
+          expect(Models::Metric.first(:name => name).counter).to be 1
+        end
+      end
+
+      context 'on subsequent calls' do
+        it 'should increment the counter' do
+          Models::Metric.incr(name)
+
+          expect { subject }.to change { Models::Metric.first(:name).counter }.by 1
+        end
+      end
+    end
+  end
+end

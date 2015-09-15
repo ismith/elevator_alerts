@@ -40,6 +40,11 @@ module Models
     has n, :outages, :through => Resource
     belongs_to :station, :required => false
 
+    after :create do
+      Models::Metric.incr('elevatorcreate')
+      # TODO send admin email
+    end
+
     timestamps!
 
     def self.stationless
@@ -101,6 +106,21 @@ module Models
 
     def self.all_closed(opts={})
       all(opts.merge(:ended_at.not => nil))
+    end
+  end
+
+  class Metric < Base
+    include DataMapper::Resource
+
+    property :id, Serial, :key => true
+    property :name, String, :required => true
+    property :counter, Integer, :default => 0
+
+    # This is *wildly* un-threadsafe
+    def self.incr(name)
+      m = Models::Metric.first_or_create(:name => name)
+      m.counter += 1
+      m.save
     end
   end
 
