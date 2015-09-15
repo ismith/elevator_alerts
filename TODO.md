@@ -15,8 +15,8 @@
   [x] wire up mailtrap?
 [x] fix email sender
 [ ] Add admin notifier for errors
-[ ] Add admin notifier for new (stationless) elevators
-[ ] some metrics
+[x] Add admin notifier for new (stationless) elevators
+[x] some metrics
 
 [ ] UI to configure notifications per-user
 

@@ -14,4 +14,8 @@ describe Email do
       subject
     end
   end
+
+  describe 'send_admin_email!' do
+    skip
+  end
 end

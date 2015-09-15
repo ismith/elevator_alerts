@@ -40,9 +40,13 @@ module Models
     has n, :outages, :through => Resource
     belongs_to :station, :required => false
 
-    after :create do
+    after :create do |elevator|
       Models::Metric.incr('elevatorcreate')
-      # TODO send admin email
+
+      Email.send_admin_email!(
+        :subject => "ATTN: elevator outages",
+        :body => "New elevator created: #{elevator.name}."
+      )
     end
 
     timestamps!

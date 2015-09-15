@@ -18,6 +18,10 @@ describe Models::Elevator do
 
   it { should respond_to :outages }
 
+  it 'should have an after-create hook to send the admin an email' do
+    skip
+  end
+
   describe 'class methods' do
     subject { described_class }
 
