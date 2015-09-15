@@ -13,7 +13,7 @@
   [x] wire up postgres
   [x] wire up sendgrid
   [x] wire up mailtrap?
-[ ] fix email sender
+[x] fix email sender
 [ ] Add admin notifier for errors
 [ ] Add admin notifier for new (stationless) elevators
 

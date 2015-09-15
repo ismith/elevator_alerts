@@ -8,9 +8,9 @@ gem 'dm-postgres-adapter'
 
 gem 'pry'
 
-gem 'mail'
-
 gem 'rake'
+
+gem 'pony'
 
 group :development do
   gem 'dm-sqlite-adapter'

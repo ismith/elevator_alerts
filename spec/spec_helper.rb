@@ -11,5 +11,7 @@ require 'pry-debugger'
   c.before(:each) do
     Models.setup
     DataMapper.auto_migrate!
+
+    Pony.stub(:mail)
   end
 end

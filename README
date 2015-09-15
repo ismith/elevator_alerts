@@ -12,5 +12,8 @@ heroku config -s >> .env
 
 Heroku addons:
 heroku addons:create heroku-postgres:hobby-dev # 7k records
-heroku addons:create mailtrap:free # 2/sec
 heroku addons:create sendgrid:starter # 400/day
+
+Possible future TODOs:
+[ ] Add unsubscribe link - Sendgrid makes this really simple, but I'm not sure
+if there's a way to re-subscribe
