@@ -17,7 +17,7 @@ class BartApi
     if ( response.status != 200 ||
          description.nil? ||
          description.empty? )
-      Models::Unparseable.create(:data => response.body, :status_code => response.status)
+      Models::Unparseable.first_or_create(:data => response.body, :status_code => response.status)
       return nil
     end
 
@@ -31,8 +31,8 @@ class BartApi
                      .strip
   end
 
-  MATCH_SINGLE = %r{There is (one) elevator out of service at this time: (.*)\.$}.freeze
-  MATCH_MULTIPLE = %r{There are ([^ ]*) elevators out of service at this time: (.*)\.$}.freeze
+  MATCH_SINGLE = %r{There is (one) elevator out of service at this time: (.*)\.?$}.freeze
+  MATCH_MULTIPLE = %r{There are ([^ ]*) elevators out of service at this time: (.*)\.?$}.freeze
   MATCH_NONE = %{There are no elevators out of service at this time.}.freeze
   SPLIT = %r{( and |, )}.freeze
 
@@ -42,7 +42,7 @@ class BartApi
   # and raise a ParseError
   def self.parse_data(data)
     raise ArgumentError unless data.is_a? String
-    data.gsub!(/ *Thank you\./, '')
+    data.gsub!(/ *Thank you.*/, '')
     data.strip!
 
     elevator_strings = case data
@@ -54,9 +54,7 @@ class BartApi
       return data.match(MATCH_MULTIPLE)[2].split(SPLIT)
                                           .reject { |s| s =~ SPLIT }
     else
-      Models::Unparseable.create(:data => data)
-      # TODO handle this
-      raise UnparseableError, "Could not parse '#{data}'."
+      Models::Unparseable.first_or_create(:data => data)
     end
   end
 
