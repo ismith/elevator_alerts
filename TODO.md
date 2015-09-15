@@ -7,9 +7,9 @@
 [x] seed station list - dumped as data/seed.sql
 [x] Strip # and . from elevator names so SFO is handled properly?
 
-[ ] notifier code
+[x] notifier code
 [x] link notifier to outage code
-[ ] wire up heroku
+[x] wire up heroku
   [x] wire up postgres
   [x] wire up sendgrid
   [x] wire up mailtrap?

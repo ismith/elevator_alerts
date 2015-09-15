@@ -53,9 +53,9 @@ describe BartApi do
     context 'with unparseable input' do
       let(:input) { "Bad input lol" }
 
-      it 'should save the data and raise a UnparseableError' do
+      it 'should save the data and return []' do
         expect(Models::Unparseable.count).to be 0
-        expect { subject }.to raise_error(UnparseableError)
+        expect(subject).to be_empty
         expect(Models::Unparseable.count).to be 1
       end
     end

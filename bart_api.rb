@@ -33,7 +33,7 @@ class BartApi
 
   MATCH_SINGLE = %r{There is (one) elevator out of service at this time: (.*)\.?$}.freeze
   MATCH_MULTIPLE = %r{There are ([^ ]*) elevators out of service at this time: (.*)\.?$}.freeze
-  MATCH_NONE = %{There are no elevators out of service at this time.}.freeze
+  MATCH_NONE = %{There are no elevators out of service at this time}.freeze
   SPLIT = %r{( and |, )}.freeze
 
   # Given a string matching one of the three regexes above (MATCH_NONE,
@@ -44,6 +44,7 @@ class BartApi
     raise ArgumentError unless data.is_a? String
     data.gsub!(/ *Thank you.*/, '')
     data.strip!
+    data.sub!(/\.$/, '')
 
     elevator_strings = case data
     when MATCH_NONE
@@ -55,6 +56,7 @@ class BartApi
                                           .reject { |s| s =~ SPLIT }
     else
       Models::Unparseable.first_or_create(:data => data)
+      return []
     end
   end
 
