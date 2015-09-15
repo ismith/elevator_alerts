@@ -25,3 +25,4 @@
 Maybe:
 [ ] dead man snitch
 [ ] graphite instead of silly Models::Metric
+[ ] graceful shutdown: https://devcenter.heroku.com/articles/dynos#the-dyno-manager
