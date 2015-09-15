@@ -28,7 +28,7 @@ class Notifier
 
     users.each do |user|
       # Get all the out elevators that currently affect this user
-      my_elevators = Models::Outage.all_open(:elevator => user.elevators)
+      my_elevators = Models::Outage.all_open(:elevator => user.elevators.to_a) # Mumble-mumble
                                    .to_a # Mumble-mumble datamapper::collection
                                    .map(&:elevator)
                                    .map(&:name)
