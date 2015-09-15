@@ -29,7 +29,7 @@ class Email
   end
 
   def self.send_admin_email!(opts = {})
-    Models::Metric.incr("adminemail")
+    Models::Metric.incr("adminemail") rescue nil
 
     to = ENV['ADMIN_EMAIL']
 

@@ -19,6 +19,9 @@ end
 desc "Run worker every 60 seconds"
 task :worker do
   require 'bart_worker'
+  require 'models'
+
+  Models.setup
 
   loop do
     begin
