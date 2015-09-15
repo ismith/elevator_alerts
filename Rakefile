@@ -40,3 +40,14 @@ task :worker do
     sleep 60
   end
 end
+
+desc "Get current state"
+task :current do
+  require'models'
+  Models.setup
+
+  puts "Bartworker count: #{Models::Metric.first(:name => "bartworker")}"
+  puts "Current outages: #{Models::Outage.all_open.count}, #{Models::Outage.all_open.to_a.map(&:elevator).map(&:name).join(", ")}"
+  puts "Unparseables: #{Models::Unparseable.count}"
+  puts "Users: #{Models::User.count}"
+end
