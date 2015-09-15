@@ -1,4 +1,5 @@
 require 'data_mapper'
+require 'email'
 
 DB_STRING_LENGTH=255
 DataMapper::Property::String.length(DB_STRING_LENGTH)
@@ -45,10 +46,12 @@ module Models
     after :create do |elevator|
       Models::Metric.incr('elevatorcreate')
 
-      Email.send_admin_email!(
-        :subject => "ATTN: elevator outages",
-        :body => "New elevator created: #{elevator.name}."
-      )
+      unless ENV['RACK_ENV'] == 'testing'
+        Email.send_admin_email!(
+          :subject => "ATTN: elevator outages",
+          :body => "New elevator created: #{elevator.name}."
+        )
+      end
     end
 
     timestamps!
