@@ -43,7 +43,7 @@ class BartWorker
     # for nil:NilClass"
     elevators_to_notify = outages_to_notify.to_a.map(&:elevator).uniq
 
-    "Elevators to notify: #{elevators_to_notify.size}."
+    puts "Elevators to notify: #{elevators_to_notify.size}."
     Notifier.send_elevator_notifications!(elevators_to_notify)
   end
 end
