@@ -25,8 +25,11 @@ task :worker do
 
   loop do
     begin
+      puts "Start loop ..."
       BartWorker.run!
+      puts "About to sleep ..."
     rescue StandardError => e
+      puts "ERROR: #{e.class}, #{e.message}, #{e.backtrace}"
       Email.send_admin_email!(:subject => "ATTN: elevator outages error",
         :body => "ERROR: #{e.class}, #{e.message}, #{e.backtrace}"
       )
