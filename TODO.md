@@ -14,7 +14,7 @@
   [x] wire up sendgrid
   [x] wire up mailtrap?
 [x] fix email sender
-[ ] Add admin notifier for errors
+[x] Add admin notifier for errors
 [x] Add admin notifier for new (stationless) elevators
 [x] some metrics
 

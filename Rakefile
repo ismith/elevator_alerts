@@ -22,7 +22,14 @@ task :worker do
   require 'bart_worker'
 
   loop do
-    BartWorker.run!
+    begin
+      BartWorker.run!
+    rescue StandardError => e
+      Email.send_admin_email!(:subject => "ATTN: elevator outages error",
+        :body => "ERROR: #{e.class}, #{e.message}, #{e.backtrace}"
+      )
+    end
+
     sleep 60
   end
 end
