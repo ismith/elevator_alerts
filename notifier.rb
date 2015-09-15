@@ -40,6 +40,8 @@ class Notifier
                  :subject => "BART Elevator Alerts",
                  :body => message)
     end
+
+    users
   end
 
   private
