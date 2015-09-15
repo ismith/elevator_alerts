@@ -29,7 +29,7 @@ task :worker do
       BartWorker.run!
       puts "About to sleep ..."
     rescue UnparseableError => e
-      puts "ERROR: New Unparseable data, go look at Models::Unparseable
+      puts "ERROR: New Unparseable data, go look at Models::Unparseable"
     rescue StandardError => e
       puts "ERROR: #{e.class}, #{e.message}, #{e.backtrace}"
       Email.send_admin_email!(:subject => "ATTN: elevator outages error",
