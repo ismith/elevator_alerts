@@ -35,6 +35,7 @@ class Notifier
 
       message = elevator_notification_message(my_elevators)
 
+      puts "Sending an email to user #{user.id}..."
       Email.mail(:to => user.email,
                  :subject => "BART Elevator Alerts",
                  :body => message)
