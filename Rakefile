@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+$stdout.sync = true
+
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 
 require 'rake'
@@ -46,7 +48,7 @@ task :current do
   require'models'
   Models.setup
 
-  puts "Bartworker count: #{Models::Metric.first(:name => "bartworker")}"
+  puts "Bartworker count: #{Models::Metric.first(:name => "bartworker").counter}"
   puts "Current outages: #{Models::Outage.all_open.count}, #{Models::Outage.all_open.to_a.map(&:elevator).map(&:name).join(", ")}"
   puts "Unparseables: #{Models::Unparseable.count}"
   puts "Users: #{Models::User.count}"
