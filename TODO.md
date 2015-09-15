@@ -2,7 +2,7 @@
 
 [x] handler that takes a set of elevator-names and opens/closes outages appropriately
 [x] test handler^Wworker
-[ ] runner for said handler
+[x] runner for said handler
 
 [x] seed station list - dumped as data/seed.sql
 [x] Strip # and . from elevator names so SFO is handled properly?
@@ -16,6 +16,7 @@
 [x] fix email sender
 [ ] Add admin notifier for errors
 [ ] Add admin notifier for new (stationless) elevators
+[ ] some metrics
 
 [ ] UI to configure notifications per-user
 

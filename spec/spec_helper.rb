@@ -7,6 +7,8 @@ ENV['RACK_ENV']='testing'
 
 require 'pry-debugger'
 
+require 'pony'
+
 ::RSpec.configure do |c|
   c.before(:each) do
     Models.setup

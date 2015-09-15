@@ -16,3 +16,13 @@ task :console do
 
   Pry.start
 end
+
+desc "Run worker every 60 seconds"
+task :worker do
+  require 'bart_worker'
+
+  loop do
+    BartWorker.run!
+    sleep 60
+  end
+end

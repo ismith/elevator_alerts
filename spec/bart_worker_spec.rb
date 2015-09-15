@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'worker'
+require 'bart_worker'
 
 describe BartWorker do
   subject { described_class.run! }
