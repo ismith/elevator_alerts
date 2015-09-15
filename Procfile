@@ -1,2 +1,2 @@
 #web:
-worker: rake worker
+worker: bundle exec rake worker
