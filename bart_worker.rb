@@ -19,13 +19,19 @@ class BartWorker
     end
     total_count = Models::Elevator.count
 
-    puts "New out elevators: #{total_count - existing_count}."
+    puts "New elevators: #{total_count - existing_count}."
     puts "Data: #{data}"
 
     outages_to_notify = []
 
     # End outages that are over
-    outages_to_end = Models::Outage.all_open(:elevator.not => out_elevators)
+    # Conditional is here because all(:foo.not => []) doesn't do the intuitively
+    # obvious thing
+    if out_elevators.empty?
+      outages_to_end = Models::Outage.all_open
+    else
+      outages_to_end = Models::Outage.all_open(:elevator.not => out_elevators)
+    end
     outages_to_end.each(&:end!)
     outages_to_notify = outages_to_end
 

@@ -43,4 +43,14 @@ describe BartWorker do
 
     subject
   end
+
+  context 'if there are no out elevators' do
+    let(:data) { [] }
+
+    it 'should close all the open outages' do
+      expect(Models::Outage.all_open).not_to be_empty
+      subject
+      expect(Models::Outage.all_open).to be_empty
+    end
+  end
 end
