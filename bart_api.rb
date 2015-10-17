@@ -3,8 +3,6 @@ require 'nokogiri'
 
 require 'models'
 
-class UnparseableError < StandardError; end
-
 class BartApi
   BART_ENDPOINT = 'http://api.bart.gov/api/bsa.aspx?cmd=elev&key=MW9S-E7SL-26DU-VV8V'.freeze
 
