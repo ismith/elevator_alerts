@@ -31,12 +31,4 @@ class Email
       Pony.mail(:to => to, :subject => subject, :body => body, :headers => headers)
     end
   end
-
-  def self.send_admin_email!(opts = {})
-    Models::Metric.incr("adminemail") rescue nil
-
-    to = ENV['ADMIN_EMAIL']
-
-    self.mail(:to => to, :subject => opts[:subject], :body => opts[:body])
-  end
 end

@@ -33,10 +33,7 @@ module Models
       Models::Metric.incr('unparseablecreate')
 
       unless ENV['RACK_ENV'] == 'testing'
-        Email.send_admin_email!(
-          :subject => "ATTN: elevator outages",
-          :body => "New unparseable created: '#{unparseable.data}'."
-        )
+        Rollbar.warn("New unparseable created: #{unparseable.data}")
       end
     end
   end
