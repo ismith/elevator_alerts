@@ -14,6 +14,10 @@ gem 'pony'
 
 gem 'rollbar'
 
+gem 'sinatra'
+gem 'json'
+gem 'rest-client'
+
 group :development do
   gem 'dm-sqlite-adapter'
   gem 'pry-debugger'

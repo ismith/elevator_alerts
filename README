@@ -26,3 +26,5 @@ Possible future TODOs:
 
 HOWTO:
 - log to stdout instead of sending email: set NO_EMAIL env var
+- If ALLOWED_USERS='*', then anyone can register.  Otherwise, it should be a
+  comma-separated list of email addresses
