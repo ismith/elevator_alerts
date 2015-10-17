@@ -55,9 +55,9 @@ class Notifier
     when 0
       "All of the elevators you subscribe to are currently in service."
     when 1
-      "1 of the elevators you subscribe to is out of service: #{elevators.first}."
+      "1 elevator you subscribe to is out: #{elevators.first}."
     else
-      "#{elevators.size} of the elevators you subscribe to are out of service: #{elevators.to_sentence}."
+      "#{elevators.size} elevators you subscribe to are out: #{elevators.to_sentence}."
     end
   end
 end
