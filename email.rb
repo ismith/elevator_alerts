@@ -25,7 +25,11 @@ class Email
 
     Models::Metric.incr("email")
 
-    Pony.mail(:to => to, :subject => subject, :body => body, :headers => headers)
+    if ENV['NO_EMAIL']
+      puts "Email stub: #{to}, #{subject}, #{body}"
+    else
+      Pony.mail(:to => to, :subject => subject, :body => body, :headers => headers)
+    end
   end
 
   def self.send_admin_email!(opts = {})

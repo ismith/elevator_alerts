@@ -21,3 +21,6 @@ and I'm aiming for ~1/minute.
 Possible future TODOs:
 [ ] Add unsubscribe link - Sendgrid makes this really simple, but I'm not sure
   if there's a way to re-subscribe
+
+HOWTO:
+- log to stdout instead of sending email: set NO_EMAIL env var
