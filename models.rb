@@ -1,5 +1,6 @@
 require 'data_mapper'
 require 'email'
+require 'initializer'
 
 DB_STRING_LENGTH=255
 DataMapper::Property::String.length(DB_STRING_LENGTH)

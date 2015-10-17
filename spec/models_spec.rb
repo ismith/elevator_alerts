@@ -19,8 +19,15 @@ describe Models::Elevator do
 
   it { should respond_to :outages }
 
-  it 'should have an after-create hook to send the admin an email' do
-    skip
+  it 'should have an after-create hook to log to Rollbar' do
+    orig_rack_env = ENV['RACK_ENV']
+    ENV['RACK_ENV'] = 'not-testing'
+    expect(Rollbar).to receive(:warn) do |args|
+      expect(args).to match /New elevator created:/
+    end
+
+    described_class.create(:name => "Foo")
+    ENV['RACK_ENV'] = orig_rack_env
   end
 
   describe 'class methods' do
