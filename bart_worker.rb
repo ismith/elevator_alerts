@@ -19,7 +19,7 @@ class BartWorker
     end
     total_count = Models::Elevator.count
 
-    puts "New elevators: #{total_count - existing_count}."
+    puts "New out elevators: #{total_count - existing_count}."
     puts "Data: #{data}"
 
     outages_to_notify = []

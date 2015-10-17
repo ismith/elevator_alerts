@@ -58,10 +58,7 @@ module Models
       Models::Metric.incr('elevatorcreate')
 
       unless ENV['RACK_ENV'] == 'testing'
-        Email.send_admin_email!(
-          :subject => "ATTN: elevator outages",
-          :body => "New elevator created: #{elevator.name}."
-        )
+        Rollbar.warn("New elevator created: #{elevator.name}, #{elevator.id}")
       end
     end
 
