@@ -89,6 +89,8 @@ GEM
       debugger (~> 1.3)
       pry (>= 0.9.10, < 0.11.0)
     rake (10.4.2)
+    rollbar (2.4.0)
+      multi_json
     rspec (3.3.0)
       rspec-core (~> 3.3.0)
       rspec-expectations (~> 3.3.0)
@@ -119,6 +121,7 @@ DEPENDENCIES
   pry
   pry-debugger
   rake
+  rollbar
   rspec
 
 BUNDLED WITH

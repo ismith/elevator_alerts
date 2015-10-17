@@ -5,6 +5,7 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'models'
 require 'bart_api'
 require 'notifier'
+require 'initializer'
 
 class BartWorker
   def self.run!

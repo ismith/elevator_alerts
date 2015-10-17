@@ -13,6 +13,8 @@ heroku config -s >> .env
 Heroku addons:
 heroku addons:create heroku-postgres:hobby-dev # 7k records
 heroku addons:create sendgrid:starter # 400/day
+heroku addons:create rollbar:free # 3000/mo, 30 days retention
+# heroku addons:create deployhooks:http [redacted] # you can get this from https://rollbar.com/elevatoralerts/elevatoralerts/deploys/
 
 Note:
 Not using heroku scheduler because it can only run hourly or every 10 minutes,

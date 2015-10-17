@@ -12,6 +12,7 @@ task :console do
 
   require 'models'
   require 'bart_api'
+  require 'initializer'
 
   Models.setup
 
@@ -22,6 +23,7 @@ desc "Run worker every 60 seconds"
 task :worker do
   require 'bart_worker'
   require 'models'
+  require 'initializer'
 
   Models.setup
 
@@ -32,11 +34,10 @@ task :worker do
       puts "About to sleep ..."
     rescue UnparseableError => e
       puts "ERROR: New Unparseable data, go look at Models::Unparseable"
+      Rollbar.error(e)
     rescue StandardError => e
       puts "ERROR: #{e.class}, #{e.message}, #{e.backtrace}"
-      Email.send_admin_email!(:subject => "ATTN: elevator outages error",
-        :body => "ERROR: #{e.class}, #{e.message}, #{e.backtrace}"
-      )
+      Rollbar.error(e)
     end
 
     sleep 60
@@ -46,6 +47,7 @@ end
 desc "Get current state"
 task :current do
   require'models'
+  require 'initializer'
   Models.setup
 
   puts "Bartworker count: #{Models::Metric.first(:name => "bartworker").counter}"

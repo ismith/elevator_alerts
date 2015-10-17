@@ -12,6 +12,8 @@ gem 'rake'
 
 gem 'pony'
 
+gem 'rollbar'
+
 group :development do
   gem 'dm-sqlite-adapter'
   gem 'pry-debugger'
