@@ -33,9 +33,7 @@ module Models
     after :create do |unparseable|
       Models::Metric.incr('unparseablecreate')
 
-      unless ENV['RACK_ENV'] == 'testing'
-        Rollbar.warn("New unparseable created: #{unparseable.data}")
-      end
+      Rollbar.warn("New unparseable created: #{unparseable.data}")
     end
   end
 
@@ -55,9 +53,7 @@ module Models
     after :create do |elevator|
       Models::Metric.incr('elevatorcreate')
 
-      unless ENV['RACK_ENV'] == 'testing'
-        Rollbar.warn("New elevator created: #{elevator.name}, #{elevator.id}")
-      end
+      Rollbar.warn("New elevator created: #{elevator.name}, #{elevator.id}")
     end
 
     timestamps!
