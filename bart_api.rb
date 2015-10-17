@@ -33,7 +33,7 @@ class BartApi
 
   MATCH_SINGLE = %r{There is (one) elevator out of service at this time: (.*)\.?$}.freeze
   MATCH_MULTIPLE = %r{There are ([^ ]*) elevators out of service at this time: (.*)\.?$}.freeze
-  MATCH_NONE = %{There are no elevators out of service at this time}.freeze
+  MATCH_NONE = %r{There are no elevators out of service at this time}.freeze
   SPLIT = %r{( and |, )}.freeze
 
   # Given a string matching one of the three regexes above (MATCH_NONE,
