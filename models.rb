@@ -142,6 +142,8 @@ module Models
     property :id, Serial, :key => true
     property :email, String, :index => true
 
+    timestamps!
+
     has n, :stations, :through => Resource
     has n, :elevators, :through => :stations
   end
