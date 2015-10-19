@@ -1,20 +1,21 @@
 source 'https://rubygems.org'
 
-gem 'nokogiri'
-gem 'faraday'
+gem 'nokogiri', :require => :false
+gem 'faraday', :require => :false
 
 gem 'datamapper'
 gem 'dm-postgres-adapter'
 
-gem 'pry'
+gem 'pry', :require => :false
+gem 'pry-nav', :require => :false
 
-gem 'rake'
+gem 'rake', :require => :false
 
-gem 'pony'
+gem 'pony', :require => :false
 
 gem 'rollbar'
 
-gem 'sinatra'
+gem 'sinatra', :require => :false
 gem 'json'
 gem 'rest-client'
 

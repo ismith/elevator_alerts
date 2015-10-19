@@ -18,11 +18,15 @@
 [x] Add admin notifier for new (stationless) elevators
 [x] some metrics
 
-[ ] UI to configure notifications per-user
+[x] UI to configure notifications per-user
+[ ] secret sessions
+[ ] flash
+[ ] rack-csrf
+[ ] google analytics
 
-[ ] shorten elevator names
 
 Maybe:
-[ ] dead man snitch
+[ ] shorten elevator names
 [ ] graphite instead of silly Models::Metric
 [ ] graceful shutdown: https://devcenter.heroku.com/articles/dynos#the-dyno-manager
+[ ] replace rest-client with faraday

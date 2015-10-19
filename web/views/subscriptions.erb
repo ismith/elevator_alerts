@@ -1,0 +1,28 @@
+<p>Welcome <%= session[:email] %>!</p>
+
+<a href="/">Back home</a>
+
+<p>Choose the stations for which you want to receive elevator notifications.</p>
+<form action='/api/subscriptions' method='POST'>
+
+  <ul>
+  <% @stations.each do |station| %>
+    <% checked = @user.stations.include?(station) %>
+    <li>
+    <input type='checkbox' name='<%= "stations[]"%>'
+                           value='<%= station.id %>'
+                           <% if checked %>
+                           checked=true
+                           <% end %>
+    >
+      <%= station.name %>
+    </input>
+    </li>
+  <% end %>
+  </ul>
+
+  <input type='submit' text='Save subscriptions'>
+</form>
+
+
+<a href="/auth/logout" title="Sign-out">Sign-out</a>

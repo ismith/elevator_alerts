@@ -3,6 +3,12 @@ require 'sinatra'
 require 'json'
 require 'rest-client'
 
+f= File.join(File.dirname(File.expand_path(__FILE__)), '..')
+$LOAD_PATH.unshift f
+require 'models'
+
+Models.setup
+
 # This session cookie never expires.
 set :session_secret, ENV['SESSION_SECRET']
 set :sessions, :domain => ENV['SESSION_DOMAIN']
@@ -51,4 +57,24 @@ end
 get "/auth/logout" do
    session[:email] = nil
    redirect "/"
+end
+
+get '/subscriptions' do
+  halt 401 unless session[:email]
+
+  @stations = Models::Station.all
+  @user = Models::User.first(:email => session[:email])
+  erb :subscriptions
+end
+
+post '/api/subscriptions' do
+  halt 401 unless session[:email]
+
+  @user = Models::User.first(:email => session[:email])
+  @stations = Models::Station.all(:id => params[:stations])
+
+  @user.stations = @stations
+  @user.save
+
+  redirect '/subscriptions'
 end

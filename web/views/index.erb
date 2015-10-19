@@ -1,46 +1,48 @@
 <% if login? %>
   <p>Welcome <%= session[:email] %>!</p>
-  <a href="/auth/logout" title="Sign-out">Sign-out</a>
+  <p><a href="/subscriptions">Edit your subscriptions</a></p>
+  <p><a href="/auth/logout" title="Sign-out">Sign-out</a></p>
 <% else %>
   <a id="browserid" href="#" title="Sign-in with Persona">
     <img src="/images/sign_in_blue.png" alt="Sign-in with Persona"/>
   </a>
-
-  <p>
-    Welcome to elevatoralerts.com!
-  </p>
-
-  <p>
-    Click the sign in button above to sign in or create an account; once you've
-done that, you can select the stations you want to receive emailed elevator
-alerts for.  (We may also email you occasionally about new features.)
-Currently, we only support <a href="https://www.bart.gov">BART</a>;
-<a href="https://www.sfmta.com/">SF Muni</a> may be added in the future.
-  </p>
-
-  <h3>Why?</h3>
-  <p>
-    BART has an <a href="https://www.bart.gov/news/alerts">email and text subscription system</a> for elevator outages - but if you
-sign up, you get outage alerts for every elevator in the system.  You probably
-only want alerts for some stations.
-  </p>
-
-  <h3> Planned features</h3>
-  <p>
-    <ul>
-      <li>Text alerts</li>
-      <li>Visualization of outage history</li>
-      <li>Vacation mode ("don't send me elevator alerts between these dates")</li>
-    </ul>
-  </p>
-
-  <h3> Contact us</h3>
-  <p>
-    <a href="mailto:ismith@metaforgotten.org">Contact us</a> if you have a
-feature request, bug report, or want to help add another public transit system.
-  </p>
-
-  <p>
-    Code to be open-sourced soon.
-  </p>
 <% end %>
+
+<p>
+  Welcome to elevatoralerts.com!
+</p>
+
+<p>
+  Click the sign in button above to sign in or create an account; once you've
+  done that, you can select the stations you want to receive emailed elevator
+  alerts for. (We may also email you occasionally about new features.)
+  Currently, we only support <a href="https://www.bart.gov">BART</a>;
+  <a href="https://www.sfmta.com/">SF Muni</a> may be added in the future.
+</p>
+
+<h3>Why?</h3>
+<p>
+  BART has an <a href="https://www.bart.gov/news/alerts">email and text
+  subscription system</a> for elevator outages - but if you sign up, you get
+  outage alerts for every elevator in the system.  You probably only want alerts
+  for some stations.
+</p>
+
+<h3> Planned features</h3>
+<p>
+  <ul>
+    <li>Text alerts</li>
+    <li>Visualization of outage history</li>
+    <li>Vacation mode ("don't send me elevator alerts between these dates")</li>
+  </ul>
+</p>
+
+<h3> Contact us</h3>
+<p>
+  <a href="mailto:ismith@metaforgotten.org">Contact us</a> if you have a
+  feature request, bug report, or want to help add another public transit system.
+</p>
+
+<p>
+  Code to be open-sourced soon.
+</p>
