@@ -39,8 +39,6 @@ post "/auth/login" do
     response = JSON.parse(RestClient::Resource.new(restclient_url, :verify_ssl => true).post(restclient_params))
   end
 
-  puts "aud: http://#{ENV['SESSION_DOMAIN']}:#{session_port}"
-  puts "HERE1: #{response['status']}, #{response['email']}, #{response.inspect}"
   # create a session if assertion is valid
   if response["status"] == "okay" && email_is_authorized?(response["email"])
     session[:email] = response["email"]
