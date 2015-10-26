@@ -24,8 +24,9 @@
 [x] rack-csrf
 [x] google analytics
 [x] rollbar middleware in app
-[ ] favicon.ico
-[ ] rollbar should ignore Sinatra::NotFound
+[x] rollbar should ignore Sinatra::NotFound
+
+[ ] add current-outages info to index
 
 Maybe:
 [ ] Use bundler groups for smarter requiring

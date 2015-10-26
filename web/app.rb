@@ -41,8 +41,11 @@ helpers do
     !session[:email].nil?
   end
 
-  def session_port
-    ENV['SESSION_DOMAIN'] == 'localhost' ? 4567 : 443
+  def audience
+    protocol = request.env['rack.url_scheme']
+    port = request.host_with_port.sub(/.*:/,'')
+
+    "#{protocol}://#{ENV['SESSION_DOMAIN']}:#{port}"
   end
 
   def email_is_authorized?(email)
@@ -76,7 +79,7 @@ post "/auth/login" do
     restclient_url = "https://verifier.login.persona.org/verify"
     restclient_params = {
       :assertion => params["assertion"],
-      :audience  => "http://#{ENV['SESSION_DOMAIN']}:#{session_port}"
+      :audience  => audience
     }
     puts "Attempting login for #{restclient_params[:audience]}"
     response = JSON.parse(RestClient::Resource.new(restclient_url, :verify_ssl => true).post(restclient_params))
