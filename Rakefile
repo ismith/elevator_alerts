@@ -24,7 +24,7 @@ desc "Run worker every 60 seconds"
 task :worker do
   require 'bart_worker'
   require 'models'
-  require 'initializer'
+  require 'my_rollbar'
   require 'keen'
 
   Models.setup
@@ -46,7 +46,7 @@ end
 desc "Get current state"
 task :current do
   require'models'
-  require 'initializer'
+  require 'my_rollbar'
   require 'keen'
   Models.setup
 
