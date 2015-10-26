@@ -103,7 +103,7 @@ get '/subscriptions' do
   require_login!
 
   @stations = Models::Station.all
-  @user = Models::User.first(:email => session[:email])
+  @user = Models::User.first_or_create(:email => session[:email])
   erb :subscriptions
 end
 
