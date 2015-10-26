@@ -19,13 +19,15 @@
 [x] some metrics
 
 [x] UI to configure notifications per-user
-[ ] secret sessions
+[x] encrypted sessions
 [ ] flash
 [ ] rack-csrf
 [ ] google analytics
+[ ] rollbar middleware in app
 
 
 Maybe:
+[ ] Use bundler groups for smarter requiring
 [ ] shorten elevator names
 [ ] graphite instead of silly Models::Metric
 [ ] graceful shutdown: https://devcenter.heroku.com/articles/dynos#the-dyno-manager

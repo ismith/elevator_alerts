@@ -67,6 +67,7 @@ GEM
       data_objects (= 0.10.16)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
+    encrypted_cookie (0.0.4)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     fastercsv (1.5.5)
@@ -96,6 +97,9 @@ GEM
     pry-nav (0.2.4)
       pry (>= 0.9.10, < 0.11.0)
     rack (1.6.4)
+    rack-canonical-host (0.1.0)
+      addressable
+      rack (~> 1.0)
     rack-protection (1.5.3)
       rack
     rake (10.4.2)
@@ -137,6 +141,7 @@ DEPENDENCIES
   datamapper
   dm-postgres-adapter
   dm-sqlite-adapter
+  encrypted_cookie
   faraday
   json
   nokogiri
@@ -144,6 +149,7 @@ DEPENDENCIES
   pry
   pry-debugger
   pry-nav
+  rack-canonical-host
   rake
   rest-client
   rollbar

@@ -16,8 +16,11 @@ gem 'pony', :require => :false
 gem 'rollbar'
 
 gem 'sinatra', :require => :false
-gem 'json'
-gem 'rest-client'
+gem 'json', :require => :false
+gem 'rest-client', :require => :false
+
+gem 'encrypted_cookie', :require => :false
+gem 'rack-canonical-host', :require => :false
 
 group :development do
   gem 'dm-sqlite-adapter'

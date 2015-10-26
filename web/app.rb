@@ -2,6 +2,14 @@ require 'rubygems'
 require 'sinatra'
 require 'json'
 require 'rest-client'
+require 'encrypted_cookie'
+require 'rack-canonical-host'
+
+class Hash
+  def options
+    self['options']
+  end
+end
 
 f= File.join(File.dirname(File.expand_path(__FILE__)), '..')
 $LOAD_PATH.unshift f
@@ -9,10 +17,13 @@ require 'models'
 
 Models.setup
 
-# This session cookie never expires.
-set :session_secret, ENV['SESSION_SECRET']
-set :sessions, :domain => ENV['SESSION_DOMAIN']
-enable :sessions
+use Rack::CanonicalHost, ENV['SESSION_DOMAIN']
+
+domain = ENV['SESSION_DOMAIN'] unless ENV['SESSION_DOMAIN'] == 'localhost'
+use Rack::Session::EncryptedCookie, :secret => ENV['SESSION_SECRET'],
+                                    :domain => domain,
+                                    :httponly => true
+disable :show_exceptions
 
 helpers do
   def login?
@@ -60,7 +71,7 @@ get "/auth/logout" do
 end
 
 get '/subscriptions' do
-  halt 401 unless session[:email]
+  redirect '/' unless session[:email]
 
   @stations = Models::Station.all
   @user = Models::User.first(:email => session[:email])
