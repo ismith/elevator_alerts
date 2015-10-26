@@ -34,7 +34,7 @@ module Models
     after :create do |unparseable|
       Keen.publish("create_unparseable", {})
 
-      Rollbar.warn("New unparseable created: #{unparseable.data}")
+      Rollbar.error("New unparseable created: #{unparseable.data}")
     end
   end
 
@@ -54,7 +54,7 @@ module Models
     after :create do |elevator|
       Keen.publish("create_elevator", :name => elevator.name)
 
-      Rollbar.warn("New elevator created: #{elevator.name}, #{elevator.id}")
+      Rollbar.error("New elevator created: #{elevator.name}, #{elevator.id}")
     end
 
     timestamps!

@@ -8,7 +8,7 @@ describe Models::Unparseable do
   it { should respond_to :status_code }
 
   it 'should have an after-create hook to log to Rollbar' do
-    expect(Rollbar).to receive(:warn) do |args|
+    expect(Rollbar).to receive(:error) do |args|
       expect(args).to match /New unparseable created:/
     end
 
@@ -28,7 +28,7 @@ describe Models::Elevator do
   it { should respond_to :outages }
 
   it 'should have an after-create hook to log to Rollbar' do
-    expect(Rollbar).to receive(:warn) do |args|
+    expect(Rollbar).to receive(:error) do |args|
       expect(args).to match /New elevator created:/
     end
 
