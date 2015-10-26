@@ -13,6 +13,7 @@ task :console do
   require 'models'
   require 'bart_api'
   require 'my_rollbar'
+  require 'keen'
 
   Models.setup
 
@@ -24,6 +25,7 @@ task :worker do
   require 'bart_worker'
   require 'models'
   require 'initializer'
+  require 'keen'
 
   Models.setup
 
@@ -45,6 +47,7 @@ desc "Get current state"
 task :current do
   require'models'
   require 'initializer'
+  require 'keen'
   Models.setup
 
   puts "Bartworker count: #{Models::Metric.first(:name => "bartworker").counter}"

@@ -26,6 +26,8 @@ gem 'rack_csrf', :require => false
 
 gem 'rack-flash3', :require => false
 
+gem 'keen'
+
 group :development do
   gem 'dm-sqlite-adapter'
   gem 'pry-debugger'

@@ -1,4 +1,5 @@
 require 'rollbar'
+require 'rollbar/request_data_extractor'
 
 unless ENV['RACK_ENV']=='testing'
   Rollbar.configure do |c|

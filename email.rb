@@ -23,7 +23,7 @@ class Email
     # Can't find the opentrack setting in sendgrid's web dashboard, so disable it here
     headers = { "X-SMTPAPI" => { :filters => { :opentrack => { :settings => { :enable => 0 } } } }.to_json }
 
-    Models::Metric.incr("email")
+    Keen.publish("email", to: to, subject: subject)
 
     if ENV['NO_EMAIL']
       puts "Email stub: #{to}, #{subject}, #{body}"

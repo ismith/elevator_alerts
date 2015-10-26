@@ -29,6 +29,8 @@
 Maybe:
 [ ] Use bundler groups for smarter requiring
 [ ] shorten elevator names
-[ ] graphite instead of silly Models::Metric
+[x] keen.io instead of silly Models::Metric
+[ ] refactor to remove Models::Metric
+[ ] better organization of initializers
 [ ] graceful shutdown: https://devcenter.heroku.com/articles/dynos#the-dyno-manager
 [ ] replace rest-client with faraday
