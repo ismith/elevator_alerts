@@ -47,7 +47,13 @@ helpers do
 
   def email_is_authorized?(email)
     return true if ENV['ALLOWED_USERS'] == '*'
-    return ENV['ALLOWED_USERS'].split(',').map(&:strip).include?(email)
+    if ENV['ALLOWED_USERS'].split(',').map(&:strip).include?(email)
+      puts "#{email} is an allowed user"
+      return true
+    else
+      puts "#{email} is not an allowed user"
+      return false
+    end
   end
 
   def require_login!(msg = "Sorry, you'll need to be logged in first.")
@@ -75,9 +81,9 @@ post "/auth/login" do
     response = JSON.parse(RestClient::Resource.new(restclient_url, :verify_ssl => true).post(restclient_params))
   end
 
+  puts "LOGIN: with claims: #{restclient_params}"
   # create a session if assertion is valid
   if response["status"] == "okay" && email_is_authorized?(response["email"])
-    puts "LOGIN: #{response}, with claims: #{restclient_params}"
     session[:email] = response["email"]
     response.to_json
   else
