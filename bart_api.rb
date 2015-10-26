@@ -48,7 +48,7 @@ class BartApi
     data.sub!(/\.$/, '')
 
     elevator_strings = case data
-    when MATCH_NONE
+    when *MATCH_NONE
       return []
     when MATCH_SINGLE
       return [ data.match(MATCH_SINGLE)[2] ]
