@@ -22,6 +22,7 @@
   </ul>
 
   <input type='submit' text='Save subscriptions'>
+  <%= Rack::Csrf.tag(env) %>
 </form>
 
 

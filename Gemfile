@@ -22,6 +22,8 @@ gem 'rest-client', :require => :false
 gem 'encrypted_cookie', :require => :false
 gem 'rack-canonical-host', :require => :false
 
+gem 'rack_csrf', :require => :false
+
 group :development do
   gem 'dm-sqlite-adapter'
   gem 'pry-debugger'

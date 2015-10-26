@@ -102,6 +102,8 @@ GEM
       rack (~> 1.0)
     rack-protection (1.5.3)
       rack
+    rack_csrf (2.4.0)
+      rack (>= 0.9)
     rake (10.4.2)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -150,6 +152,7 @@ DEPENDENCIES
   pry-debugger
   pry-nav
   rack-canonical-host
+  rack_csrf
   rake
   rest-client
   rollbar

@@ -4,6 +4,7 @@ require 'json'
 require 'rest-client'
 require 'encrypted_cookie'
 require 'rack-canonical-host'
+require 'rack/csrf'
 
 class Hash
   def options
@@ -18,11 +19,13 @@ require 'models'
 Models.setup
 
 use Rack::CanonicalHost, ENV['SESSION_DOMAIN']
-
 domain = ENV['SESSION_DOMAIN'] unless ENV['SESSION_DOMAIN'] == 'localhost'
 use Rack::Session::EncryptedCookie, :secret => ENV['SESSION_SECRET'],
                                     :domain => domain,
                                     :httponly => true
+use Rack::Csrf, :skip => ['POST:/auth/login'],
+                :raise => true
+
 disable :show_exceptions
 
 helpers do

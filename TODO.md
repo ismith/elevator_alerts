@@ -21,7 +21,7 @@
 [x] UI to configure notifications per-user
 [x] encrypted sessions
 [ ] flash
-[ ] rack-csrf
+[x] rack-csrf
 [ ] google analytics
 [ ] rollbar middleware in app
 
