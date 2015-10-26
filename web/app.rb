@@ -15,6 +15,9 @@ require 'rollbar/middleware/sinatra'
 require 'keen'
 require 'rack-google-analytics'
 
+# Faster logging
+$stdout.sync = true
+
 Models.setup
 
 use Rollbar::Middleware::Sinatra
