@@ -19,7 +19,7 @@ Models.setup
 
 use Rollbar::Middleware::Sinatra
 
-#use Rack::CanonicalHost, ENV['SESSION_DOMAIN']
+use Rack::CanonicalHost, ENV['SESSION_DOMAIN']
 domain = ENV['SESSION_DOMAIN'] unless ENV['SESSION_DOMAIN'] == 'localhost'
 use Rack::Session::EncryptedCookie, :secret => ENV['SESSION_SECRET'],
                                     :domain => domain,
