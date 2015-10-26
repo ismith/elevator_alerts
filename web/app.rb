@@ -74,6 +74,7 @@ post "/auth/login" do
 
   # create a session if assertion is valid
   if response["status"] == "okay" && email_is_authorized?(response["email"])
+    puts "LOGIN: #{response}, with claims: #{restclient_params}"
     session[:email] = response["email"]
     response.to_json
   else
