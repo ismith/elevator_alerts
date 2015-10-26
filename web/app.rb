@@ -42,12 +42,12 @@ helpers do
   end
 
   def audience
-    protocol = request.env['rack.url_scheme']
-    puts "RP: #{request.host_with_port}"
-    port = request.host_with_port.sub(/.*:/,'')
-    puts "PORT: #{port}"
+    protocol = request.env['HTTP_X_FORWARDED_PROTO']
+    port = request.env['HTTP_X_FORWARDED_PORT']
 
-    "#{protocol}://#{ENV['SESSION_DOMAIN']}:#{port}"
+    audience = "#{protocol}://#{ENV['SESSION_DOMAIN']}:#{port}"
+    puts "AUDIENCE: #{audience}"
+    audience
   end
 
   def email_is_authorized?(email)
@@ -94,7 +94,6 @@ post "/auth/login" do
   else
     headers = Hash[*env.select {|k,v| k.start_with? 'HTTP_'}
       .collect {|k,v| [k.sub(/^HTTP_/, ''), v]}
-      .collect {|k,v| [k.split('_').collect(&:capitalize).join('-'), v]}
       .sort
       .flatten]
 
