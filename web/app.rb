@@ -48,6 +48,7 @@ helpers do
   end
 
   def require_login!(msg = "Sorry, you'll need to be logged in first.")
+    puts "ERROR: #{session.inspect}"
     unless login?
       flash[:notice] = msg
       redirect '/'
