@@ -15,6 +15,8 @@ require 'rollbar/middleware/sinatra'
 require 'keen'
 require 'rack-google-analytics'
 
+require 'notifier'
+
 # Faster logging
 $stdout.sync = true
 
@@ -118,7 +120,9 @@ end
 post '/api/subscriptions' do
   require_login!
 
+
   @user = Models::User.first(:email => session[:email])
+  original_stations = @user.stations
   @stations = Models::Station.all(:id => params[:stations])
 
   @user.stations = @stations
@@ -126,6 +130,14 @@ post '/api/subscriptions' do
   if @user.dirty?
     @user.save &&
       flash[:notice] = 'Saved your changes!'
+
+    # If I wanted to be clever, I could do this only if the elevators currently
+    # out include ones changed in this request ... but I think it's more useful
+    # not to do that; allows users to get a sample notification.
+    my_outages = Models::Outage.all_open(:elevator => @user.stations.flat_map(&:elevator_ids))
+    my_out_elevators = my_outages.map(&:elevator)
+
+    Notifier.send_user_elevator_notification!(@user, my_out_elevators)
   end
 
   redirect '/subscriptions'

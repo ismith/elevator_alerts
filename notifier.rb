@@ -21,6 +21,15 @@ class Array
 end
 
 class Notifier
+  def self.send_user_elevator_notification!(user, elevators)
+      message = elevator_notification_message(elevators)
+
+      puts "Sending an email to user #{user.id}..."
+      Email.mail(:to => user.email,
+                 :subject => "BART Elevator Alerts",
+                 :body => message)
+  end
+
   def self.send_elevator_notifications!(elevators)
     # We want to notify all users whose station-list includes an elevator
     # affected by the latest run
@@ -31,14 +40,8 @@ class Notifier
       my_elevators = Models::Outage.all_open(:elevator => user.elevators.to_a) # Mumble-mumble
                                    .to_a # Mumble-mumble datamapper::collection
                                    .map(&:elevator)
-                                   .map(&:name)
 
-      message = elevator_notification_message(my_elevators)
-
-      puts "Sending an email to user #{user.id}..."
-      Email.mail(:to => user.email,
-                 :subject => "BART Elevator Alerts",
-                 :body => message)
+      send_user_elevator_notification!(user, my_elevators)
     end
 
     users
@@ -50,6 +53,15 @@ class Notifier
   #
   # @return [String]
   def self.elevator_notification_message(elevators)
+    elevators = elevators.map do |e|
+      case e
+      when String
+        e
+      when Models::Elevator
+        e.name
+      end
+    end
+
     raise ArgumentError unless elevators.is_a?(Array) && elevators.all? { |e| e.class == String }
     case elevators.size
     when 0
