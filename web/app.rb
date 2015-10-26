@@ -13,6 +13,7 @@ require 'models'
 require 'my_rollbar'
 require 'rollbar/middleware/sinatra'
 require 'keen'
+require 'rack-google-analytics'
 
 Models.setup
 
@@ -29,6 +30,8 @@ use Rack::Csrf, :skip => ['POST:/auth/login'],
 disable :show_exceptions
 
 use Rack::Flash, :sweep => true
+
+use Rack::GoogleAnalytics, :tracker => ENV['GOOGLE_ANALYTICS_KEY']
 
 helpers do
   def login?

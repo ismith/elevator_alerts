@@ -22,7 +22,7 @@
 [x] encrypted sessions
 [x] flash
 [x] rack-csrf
-[ ] google analytics
+[x] google analytics
 [x] rollbar middleware in app
 
 
@@ -30,7 +30,7 @@ Maybe:
 [ ] Use bundler groups for smarter requiring
 [ ] shorten elevator names
 [x] keen.io instead of silly Models::Metric
-[ ] refactor to remove Models::Metric
+[ ] remove Models::Metric
 [ ] better organization of initializers
 [ ] graceful shutdown: https://devcenter.heroku.com/articles/dynos#the-dyno-manager
 [ ] replace rest-client with faraday

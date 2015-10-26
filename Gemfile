@@ -28,6 +28,8 @@ gem 'rack-flash3', :require => false
 
 gem 'keen'
 
+gem 'rack-google-analytics', :require => false
+
 group :development do
   gem 'dm-sqlite-adapter'
   gem 'pry-debugger'
