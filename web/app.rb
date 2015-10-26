@@ -92,7 +92,13 @@ post "/auth/login" do
     session[:email] = response["email"]
     response.to_json
   else
-    $stdout.puts "LOGIN ERROR: #{response.inspect}"
+    headers = Hash[*env.select {|k,v| k.start_with? 'HTTP_'}
+      .collect {|k,v| [k.sub(/^HTTP_/, ''), v]}
+      .collect {|k,v| [k.split('_').collect(&:capitalize).join('-'), v]}
+      .sort
+      .flatten]
+
+    $stdout.puts "LOGIN ERROR: #{response.inspect}, headers: #{headers}"
     {:status => "error"}.to_json
   end
 end
