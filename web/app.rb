@@ -42,7 +42,7 @@ helpers do
   end
 
   def session_port
-    ENV['SESSION_DOMAIN'] == 'localhost' ? 4567 : 80
+    ENV['SESSION_DOMAIN'] == 'localhost' ? 4567 : 443
   end
 
   def email_is_authorized?(email)
@@ -81,7 +81,6 @@ post "/auth/login" do
     response = JSON.parse(RestClient::Resource.new(restclient_url, :verify_ssl => true).post(restclient_params))
   end
 
-  puts "LOGIN: with claims: #{restclient_params}"
   # create a session if assertion is valid
   if response["status"] == "okay" && email_is_authorized?(response["email"])
     session[:email] = response["email"]
