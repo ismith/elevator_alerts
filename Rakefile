@@ -12,7 +12,7 @@ task :console do
 
   require 'models'
   require 'bart_api'
-  require 'initializer'
+  require 'my_rollbar'
 
   Models.setup
 

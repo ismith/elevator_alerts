@@ -7,3 +7,12 @@ unless ENV['RACK_ENV']=='testing'
     c.exception_level_filters.merge!('SignalException' => 'ignore')
   end
 end
+
+class RequestDataExtractor
+  include Rollbar::RequestDataExtractor
+  def from_rack(env)
+    extract_request_data_from_rack(env).merge({
+      :route => env["PATH_INFO"]
+    })
+  end
+end

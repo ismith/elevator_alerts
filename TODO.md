@@ -20,10 +20,10 @@
 
 [x] UI to configure notifications per-user
 [x] encrypted sessions
-[ ] flash
+[x] flash
 [x] rack-csrf
 [ ] google analytics
-[ ] rollbar middleware in app
+[x] rollbar middleware in app
 
 
 Maybe:

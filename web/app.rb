@@ -5,18 +5,17 @@ require 'rest-client'
 require 'encrypted_cookie'
 require 'rack-canonical-host'
 require 'rack/csrf'
-
-class Hash
-  def options
-    self['options']
-  end
-end
+require 'rack-flash'
 
 f= File.join(File.dirname(File.expand_path(__FILE__)), '..')
 $LOAD_PATH.unshift f
 require 'models'
+require 'my_rollbar'
+require 'rollbar/middleware/sinatra'
 
 Models.setup
+
+use Rollbar::Middleware::Sinatra
 
 use Rack::CanonicalHost, ENV['SESSION_DOMAIN']
 domain = ENV['SESSION_DOMAIN'] unless ENV['SESSION_DOMAIN'] == 'localhost'
@@ -27,6 +26,8 @@ use Rack::Csrf, :skip => ['POST:/auth/login'],
                 :raise => true
 
 disable :show_exceptions
+
+use Rack::Flash, :sweep => true
 
 helpers do
   def login?
@@ -42,9 +43,11 @@ helpers do
     return ENV['ALLOWED_USERS'].split(',').map(&:strip).include?(email)
   end
 
-  def require_login!
-    # Flash would be nice  here
-    redirect '/' unless login?
+  def require_login!(msg = "Sorry, you'll need to be logged in first.")
+    unless login?
+      flash[:notice] = msg
+      redirect '/'
+    end
   end
 end
 
@@ -93,7 +96,16 @@ post '/api/subscriptions' do
   @stations = Models::Station.all(:id => params[:stations])
 
   @user.stations = @stations
-  @user.save
+
+  if @user.dirty?
+    @user.save &&
+      flash[:notice] = 'Saved your changes!'
+  end
 
   redirect '/subscriptions'
 end
+
+# get '/test_error' do
+#   raise StandardError, "test error"
+#   "Hello world! <- this should never be reached"
+# end
