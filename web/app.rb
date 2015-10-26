@@ -134,7 +134,7 @@ post '/api/subscriptions' do
     # If I wanted to be clever, I could do this only if the elevators currently
     # out include ones changed in this request ... but I think it's more useful
     # not to do that; allows users to get a sample notification.
-    my_outages = Models::Outage.all_open(:elevator => @user.stations.flat_map(&:elevator_ids))
+    my_outages = Models::Outage.all_open(:elevator => @user.stations.flat_map(&:elevators))
     my_out_elevators = my_outages.map(&:elevator)
 
     Notifier.send_user_elevator_notification!(@user, my_out_elevators)
