@@ -78,6 +78,7 @@ post "/auth/login" do
       :assertion => params["assertion"],
       :audience  => "http://#{ENV['SESSION_DOMAIN']}:#{session_port}"
     }
+    puts "Attempting login for #{restclient_params[:audience]}"
     response = JSON.parse(RestClient::Resource.new(restclient_url, :verify_ssl => true).post(restclient_params))
   end
 
