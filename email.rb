@@ -1,12 +1,12 @@
 require 'pony'
 
 Pony.options = {
-  :from => 'noreply@elevatoralerts.heroku.com',
+  :from => 'noreply@elevatoralerts.com',
   :via => :smtp,
   :via_options => {
     :address => 'smtp.sendgrid.net',
     :port => '587',
-    :domain => 'heroku.com',
+    :domain => 'mail.elevatoralerts.com',
     :user_name => ENV['SENDGRID_USERNAME'],
     :password => ENV['SENDGRID_PASSWORD'],
     :authentication => :plain,
