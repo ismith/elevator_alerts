@@ -25,7 +25,6 @@
 [x] google analytics
 [x] rollbar middleware in app
 
-
 Maybe:
 [ ] Use bundler groups for smarter requiring
 [ ] shorten elevator names
