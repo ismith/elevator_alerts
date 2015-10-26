@@ -43,7 +43,9 @@ helpers do
 
   def audience
     protocol = request.env['rack.url_scheme']
+    puts "RP: #{request.host_with_port}"
     port = request.host_with_port.sub(/.*:/,'')
+    puts "PORT: #{port}"
 
     "#{protocol}://#{ENV['SESSION_DOMAIN']}:#{port}"
   end
@@ -90,6 +92,7 @@ post "/auth/login" do
     session[:email] = response["email"]
     response.to_json
   else
+    $stdout.puts "LOGIN ERROR: #{response.inspect}"
     {:status => "error"}.to_json
   end
 end
