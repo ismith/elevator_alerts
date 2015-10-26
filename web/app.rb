@@ -41,6 +41,11 @@ helpers do
     return true if ENV['ALLOWED_USERS'] == '*'
     return ENV['ALLOWED_USERS'].split(',').map(&:strip).include?(email)
   end
+
+  def require_login!
+    # Flash would be nice  here
+    redirect '/' unless login?
+  end
 end
 
 get "/" do
@@ -74,7 +79,7 @@ get "/auth/logout" do
 end
 
 get '/subscriptions' do
-  redirect '/' unless session[:email]
+  require_login!
 
   @stations = Models::Station.all
   @user = Models::User.first(:email => session[:email])
@@ -82,7 +87,7 @@ get '/subscriptions' do
 end
 
 post '/api/subscriptions' do
-  halt 401 unless session[:email]
+  require_login!
 
   @user = Models::User.first(:email => session[:email])
   @stations = Models::Station.all(:id => params[:stations])
