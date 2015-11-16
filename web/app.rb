@@ -47,7 +47,11 @@ helpers do
     protocol = request.env['HTTP_X_FORWARDED_PROTO']
     port = request.env['HTTP_X_FORWARDED_PORT']
 
-    audience = "#{protocol}://#{ENV['SESSION_DOMAIN']}:#{port}"
+    if ENV['SESSION_DOMAIN'] == 'localhost'
+      audience = "#{ENV['SESSION_DOMAIN']}:#{port}"
+    else
+      audience = "#{protocol}://#{ENV['SESSION_DOMAIN']}:#{port}"
+    end
     puts "AUDIENCE: #{audience}"
     audience
   end
