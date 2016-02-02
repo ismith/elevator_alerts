@@ -142,6 +142,7 @@ module Models
 
     property :id, Serial, :key => true
     property :email, String, :index => true
+    property :name, String, :required => false
 
     timestamps!
 

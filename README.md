@@ -1,4 +1,4 @@
-[![Build
+[Build
 Status](https://travis-ci.org/ismith/elevator_alerts.svg?branch=master)](https://travis-ci.org/ismith/elevator_alerts)
 
 Setup should be done via the console script, either by hand or scripted.
