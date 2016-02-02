@@ -32,7 +32,6 @@ gem 'rack-google-analytics', :require => false
 
 group :development do
   gem 'dm-sqlite-adapter'
-  gem 'pry-debugger'
 end
 
 group :test do
