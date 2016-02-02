@@ -17,6 +17,8 @@ require 'rack-google-analytics'
 
 require 'notifier'
 
+require 'omniauth-google-oauth2'
+
 # Faster logging
 $stdout.sync = true
 
@@ -38,6 +40,13 @@ use Rack::Flash, :sweep => true
 
 use Rack::GoogleAnalytics, :tracker => ENV['GOOGLE_ANALYTICS_KEY']
 
+use OmniAuth::Builder do
+  provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'],
+    :scope => 'email',
+    :prompt => 'select_account',
+    :name => 'login'
+end
+
 helpers do
   def login?
     !session[:email].nil?
@@ -52,7 +61,7 @@ helpers do
     else
       audience = "#{protocol}://#{ENV['SESSION_DOMAIN']}:#{port}"
     end
-    puts "AUDIENCE: #{audience}"
+    puts "AUDIENCE: #{audience}" if ENV['DEBUG']
     audience
   end
 
@@ -69,7 +78,7 @@ helpers do
 
   def require_login!(msg = "Sorry, you'll need to be logged in first.")
     unless login?
-      puts "ERROR: #{session.inspect}"
+      puts "ERROR: #{session.inspect}" if ENV['DEBUG']
       flash[:notice] = msg
       redirect '/'
     end
@@ -80,37 +89,15 @@ get "/" do
   erb :index
 end
 
-post "/auth/login" do
-  # check assertion with a request to the verifier
-  response = nil
-  if params[:assertion]
-    restclient_url = "https://verifier.login.persona.org/verify"
-    restclient_params = {
-      :assertion => params["assertion"],
-      :audience  => audience
-    }
-    puts "Attempting login for #{restclient_params[:audience]}"
-    response = JSON.parse(RestClient::Resource.new(restclient_url, :verify_ssl => true).post(restclient_params))
-  end
-
-  # create a session if assertion is valid
-  if response["status"] == "okay" && email_is_authorized?(response["email"])
-    session[:email] = response["email"]
-    response.to_json
-  else
-    headers = Hash[*env.select {|k,v| k.start_with? 'HTTP_'}
-      .collect {|k,v| [k.sub(/^HTTP_/, ''), v]}
-      .sort
-      .flatten]
-
-    $stdout.puts "LOGIN ERROR: #{response.inspect}, headers: #{headers}"
-    {:status => "error"}.to_json
-  end
-end
-
 get "/auth/logout" do
    session[:email] = nil
    redirect "/"
+end
+
+get "/auth/login/callback" do
+  session[:email] = env['omniauth.auth'][:info][:email]
+  session[:name] = env['omniauth.auth'][:info][:name]
+  redirect "/"
 end
 
 get '/subscriptions' do
@@ -118,6 +105,12 @@ get '/subscriptions' do
 
   @stations = Models::Station.all
   @user = Models::User.first_or_create(:email => session[:email])
+
+  if @user.name != session[:name]
+    @user.name = session[:name]
+    @user.save
+  end
+
   erb :subscriptions
 end
 
