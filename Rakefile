@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'rspec/core/rake_task'
+
 $stdout.sync = true
 
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
@@ -55,3 +57,6 @@ task :current do
   puts "Unparseables: #{Models::Unparseable.count}"
   puts "Users: #{Models::User.count}"
 end
+
+RSpec::Core::RakeTask.new(:spec) {|t| }
+task :default => :spec
