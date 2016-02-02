@@ -34,7 +34,6 @@ gem 'omniauth-google-oauth2'
 
 group :development do
   gem 'dm-sqlite-adapter'
-  gem 'pry-debugger'
 end
 
 group :test do
