@@ -54,7 +54,7 @@ module Models
     after :create do |elevator|
       Keen.publish("create_elevator", :name => elevator.name)
 
-      Rollbar.error("New elevator created: #{elevator.name}, #{elevator.id}")
+      Rollbar.error("New elevator created: #{elevator.name}, #{elevator.id}") unless ENV['ADDING_ELEVATORS']
     end
 
     timestamps!
@@ -73,24 +73,32 @@ module Models
     property :name, String, :index => true, :unique => true
 
     has n, :elevators
-    #has n, :systems, :through => Resource
+    has n, :systems, :through => Resource
     has n, :users, :through => Resource
 
     timestamps!
   end
 
-#  class System < Base
-#    include DataMapper::Resource
-#
-#    property :id, Serial, :key => true
-#
-#    property :name, String, :index => true, :unique => true
-#
-#    has n, :stations, :through => Resource
-#    has n, :elevators, :through => :stations, :constraint => :destroy
-#
-#    timestamps!
-#  end
+  class System < Base
+    include DataMapper::Resource
+
+    property :id, Serial, :key => true
+
+    property :name, String, :index => true, :unique => true
+
+    has n, :stations, :through => Resource
+    has n, :elevators, :through => :stations, :constraint => :destroy
+
+    def visible?
+      self.class.visible.include?(self)
+    end
+
+    def self.visible
+      all(:name.not => 'SF Muni')
+    end
+
+    timestamps!
+  end
 
   class Outage < Base
     include DataMapper::Resource
@@ -143,11 +151,16 @@ module Models
     property :id, Serial, :key => true
     property :email, String, :index => true
     property :name, String, :required => false
+    property :can_see_invisible_systems, Boolean, :default => false
 
     timestamps!
 
     has n, :stations, :through => Resource
     has n, :elevators, :through => :stations
+
+    def can_see_invisible_systems?
+      !!can_see_invisible_systems
+    end
   end
 
   def self.setup
