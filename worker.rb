@@ -4,20 +4,29 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 
 require 'models'
 require 'bart_api'
+require 'muni_api'
 require 'notifier'
 require 'my_rollbar'
 require 'keen'
 
-class BartWorker
+class Worker
   def self.run!
     Keen.publish("bartworker_run", {})
     # Get data
 
     existing_count = Models::Elevator.count
+
+    # BART
     data = BartApi.get_data
     out_elevators = BartApi.parse_data(data).map do |name|
       Models::Elevator.first_or_create(:name => name)
     end
+
+    # Muni
+    out_elevators += MuniApi.get_data.map do |name|
+      Models::Elevator.first_or_create(:name => name)
+    end
+
     total_count = Models::Elevator.count
 
     puts "New elevators: #{total_count - existing_count}."
@@ -58,5 +67,5 @@ end
 
 if __FILE__ == $0
   Models.setup
-  BartWorker.run!
+  Worker.run!
 end

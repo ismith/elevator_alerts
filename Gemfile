@@ -32,6 +32,8 @@ gem 'rack-google-analytics', :require => false
 
 gem 'omniauth-google-oauth2'
 
+gem 'dotenv'
+
 group :development do
   gem 'dm-sqlite-adapter'
 end

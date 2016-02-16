@@ -7,6 +7,11 @@ require 'rack-canonical-host'
 require 'rack/csrf'
 require 'rack-flash'
 
+if ENV['DOTENV'] # Not needed if we have heroku/heroku local
+  require 'dotenv'
+  Dotenv.load
+end
+
 f= File.join(File.dirname(File.expand_path(__FILE__)), '..')
 $LOAD_PATH.unshift f
 require 'models'
@@ -103,9 +108,17 @@ end
 get '/subscriptions' do
   require_login!
 
-  @stations = Models::Station.all
   @user = Models::User.first_or_create(:email => session[:email])
 
+  if @user.can_see_invisible_systems?
+    @systems = Models::System.all
+  else
+  @systems = Models::System.visible
+  end
+
+  @stations = @systems.flat_map(&:stations).uniq
+
+  # If we didn't have a user's name before, save it
   if @user.name != session[:name]
     @user.name = session[:name]
     @user.save
