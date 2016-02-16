@@ -29,7 +29,7 @@ end
 
 desc "Run worker every 60 seconds"
 task :worker do
-  require 'bart_worker'
+  require 'worker'
   require 'models'
   require 'my_rollbar'
   require 'keen'
@@ -39,7 +39,7 @@ task :worker do
   loop do
     begin
       puts "Start loop ..."
-      BartWorker.run!
+      Worker.run!
       puts "About to sleep ..."
     rescue StandardError => e
       puts "ERROR: #{e.class}, #{e.message}, #{e.backtrace}"
@@ -57,7 +57,7 @@ task :current do
   require 'keen'
   Models.setup
 
-  puts "Bartworker count: #{Models::Metric.first(:name => "bartworker").counter}"
+  puts "Worker count: #{Models::Metric.first(:name => "bartworker").counter}"
   puts "Current outages: #{Models::Outage.all_open.count}, #{Models::Outage.all_open.to_a.map(&:elevator).map(&:name).join(", ")}"
   puts "Unparseables: #{Models::Unparseable.count}"
   puts "Users: #{Models::User.count}"
