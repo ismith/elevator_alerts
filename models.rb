@@ -152,6 +152,8 @@ module Models
     property :email, String, :index => true
     property :name, String, :required => false
     property :can_see_invisible_systems, Boolean, :default => false
+    property :phone_number, String, :required => false
+    property :phone_number_verified, Boolean, :default => false
 
     timestamps!
 
@@ -160,6 +162,18 @@ module Models
 
     def can_see_invisible_systems?
       !!can_see_invisible_systems
+    end
+
+    def use_phone_number?
+      self.phone_number && self.phone_number_verified
+    end
+
+    def current_notification_address
+      if self.use_phone_number?
+        self.phone_number # TODO human-readable
+      else
+        self.email
+      end
     end
   end
 

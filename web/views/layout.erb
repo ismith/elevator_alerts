@@ -17,7 +17,7 @@
     <%# Currently not using different types of flash %>
     <% if flash[:notice] %>
       <div>
-        <p style="font-weight: bold;"><%= flash[:notice] %></p>
+        <p style="font-weight: bold; color: red;"><%= flash[:notice] %></p>
       </div>
     <% end %>
     <%= yield %>

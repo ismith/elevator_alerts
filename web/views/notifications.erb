@@ -1,0 +1,50 @@
+<p>Welcome <%= session[:email] %>!</p>
+
+<a href="/">Back home</a><br>
+<a href="/subscriptions">Edit subscriptions</a>
+
+<p>Currently, you get notifications at <%= @user.current_notification_address %>.
+
+<%# three states:
+1: PHONE NUMBER NIL (use email, offer sms)
+2: PHONE NUMBER PENDING (use email, offer verification dialogue, offer to resend verification or cancel)
+3: PHONE NUMBER VERIFIED (use sms, offer to go back to email)
+
+Transitions are:
+1->2
+2->3
+2->1
+3->1
+%>
+
+<% if @user.phone_number.nil? %>
+  <p>To get notified by text message instead, enter your phone number here; we'll
+  send you a text with a code, you'll need to come back here and enter it to
+  verify that the number is correct.</p>
+
+  <form action='/api/notifications' method='POST'>
+    <p>Phone number: <input type='text' name='phone_number'></p>
+    <p><input type='submit' value='Save phone number'></p>
+    <%= Rack::Csrf.tag(env) %>
+  </form>
+<% elsif @user.phone_number && !@user.phone_number_verified %>
+  <p>You should have gotten a text message with a verification code; enter it here.</p>
+  <form action='/api/notifications/verify' method='POST'>
+    <p>Verification code: <input id='verification_code' type='text' name='verification_code'></p>
+    <p><input type='submit' value='Submit'></p>
+    <%= Rack::Csrf.tag(env) %>
+  </form>
+  <form action='/api/notifications/resend' method='POST'>
+    <p><input type='submit' value='Resend verification code'>
+    <%= Rack::Csrf.tag(env) %>
+  </form>
+  <form action='/api/notifications/delete' method='POST'>
+    <p><input type='submit' value='Cancel verification, keep using email'>
+    <%= Rack::Csrf.tag(env) %>
+  </form>
+<% else %>
+  <form action='/api/notifications/delete' method='POST'>
+    <p><input type='submit' value='Delete phone number, go back to email notifications'>
+    <%= Rack::Csrf.tag(env) %>
+  </form>
+<% end %>
