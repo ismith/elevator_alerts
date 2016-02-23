@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 
+begin
 require 'rspec/core/rake_task'
+rescue LoadError
+end
 
 if ENV['DOTENV'] # Not needed if we have heroku/heroku local
   require 'dotenv'
