@@ -2,6 +2,9 @@
 
 begin
 require 'rspec/core/rake_task'
+
+  RSpec::Core::RakeTask.new(:spec) {|t| }
+  task :default => :spec
 rescue LoadError
 end
 
@@ -110,6 +113,3 @@ namespace :migrations do
     end
   end
 end
-
-RSpec::Core::RakeTask.new(:spec) {|t| }
-task :default => :spec
