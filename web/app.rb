@@ -186,7 +186,6 @@ end
 post '/api/notifications/resend' do
   require_login!
 
-  @user.phone_number = phone_number
   Authy.submit_number(@user.phone_number)
 
   flash[:notice] = 'Resent verification code.'
