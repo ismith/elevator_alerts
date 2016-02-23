@@ -8,7 +8,7 @@ class MuniApi # SF Muni
 
   def self.get_data
     response = Faraday.get(MUNI_ENDPOINT)
-    body = Nokogiri::XML.parse(body)
+    xml = Nokogiri::XML.parse(body)
 
     messages = xml.xpath('//messages/text').to_a
                   .map { |e| e.to_s
