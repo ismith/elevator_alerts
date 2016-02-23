@@ -22,14 +22,14 @@ Transitions are:
   send you a text with a code, you'll need to come back here and enter it to
   verify that the number is correct.</p>
 
-  <form action='/api/notifications' method='POST'>
-    <p>Phone number: <input type='text' name='phone_number'></p>
+  <form id='phone_form' action='/api/notifications' method='POST'>
+    <p>Phone number: <input type='text' id='phone_number' name='phone_number'></p>
     <p><input type='submit' value='Save phone number'></p>
     <%= Rack::Csrf.tag(env) %>
   </form>
 <% elsif @user.phone_number && !@user.phone_number_verified %>
   <p>You should have gotten a text message with a verification code; enter it here.</p>
-  <form action='/api/notifications/verify' method='POST'>
+  <form id='verify_form' action='/api/notifications/verify' method='POST'>
     <p>Verification code: <input id='verification_code' type='text' name='verification_code'></p>
     <p><input type='submit' value='Submit'></p>
     <%= Rack::Csrf.tag(env) %>

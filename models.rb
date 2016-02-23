@@ -170,7 +170,8 @@ module Models
 
     def current_notification_address
       if self.use_phone_number?
-        self.phone_number # TODO human-readable
+        _, area_code, exchange, extension = self.phone_number.match(/(...)(...)(....)/).to_a
+        "(#{area_code}) #{exchange}-#{extension}"
       else
         self.email
       end
