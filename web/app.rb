@@ -49,7 +49,7 @@ use Rack::GoogleAnalytics, :tracker => ENV['GOOGLE_ANALYTICS_KEY']
 
 use OmniAuth::Builder do
   provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'],
-    :scope => 'email',
+    :scope => 'email, openid',
     :prompt => 'select_account',
     :name => 'login'
 end
@@ -89,6 +89,8 @@ helpers do
       flash[:notice] = msg
       redirect '/'
     end
+
+    @user = Models::User.first_or_create(:email => session[:email])
   end
 end
 
@@ -104,13 +106,20 @@ end
 get "/auth/login/callback" do
   session[:email] = env['omniauth.auth'][:info][:email]
   session[:name] = env['omniauth.auth'][:info][:name]
+
+  @user = Models::User.first_or_create(:email => session[:email])
+
+  # If we didn't have a user's name before, save it
+  if @user.name != session[:name]
+    @user.name = session[:name]
+    @user.save
+  end
+
   redirect "/"
 end
 
 get '/subscriptions' do
   require_login!
-
-  @user = Models::User.first_or_create(:email => session[:email])
 
   if @user.can_see_invisible_systems?
     @systems = Models::System.all
@@ -120,28 +129,17 @@ get '/subscriptions' do
 
   @stations = @systems.flat_map(&:stations).uniq
 
-  # If we didn't have a user's name before, save it
-  if @user.name != session[:name]
-    @user.name = session[:name]
-    @user.save
-  end
-
   erb :subscriptions
 end
 
 get '/notifications' do
   require_login!
 
-  @user = Models::User.first_or_create(:email => session[:email])
-
   erb :notifications
 end
 
 post '/api/notifications' do
   require_login!
-
-
-  @user = Models::User.first(:email => session[:email])
 
   halt 412 unless @user.phone_number.nil?
 
@@ -162,8 +160,6 @@ end
 post '/api/notifications/verify' do
   require_login!
 
-  @user = Models::User.first(:email => session[:email])
-
   # Error if sms isn't in notification state
 
   if Authy.verify_number(@user.phone_number, params[:verification_code])
@@ -180,8 +176,6 @@ end
 post '/api/notifications/delete' do
   require_login!
 
-  @user = Models::User.first(:email => session[:email])
-
   @user.phone_number = nil
   @user.phone_number_verified = false
   @user.save
@@ -191,8 +185,6 @@ end
 
 post '/api/notifications/resend' do
   require_login!
-
-  @user = Models::User.first(:email => session[:email])
 
   @user.phone_number = phone_number
   Authy.submit_number(@user.phone_number)
@@ -205,7 +197,6 @@ end
 post '/api/subscriptions' do
   require_login!
 
-  @user = Models::User.first(:email => session[:email])
   original_stations = @user.stations
   @stations = Models::Station.all(:id => params[:stations])
 
