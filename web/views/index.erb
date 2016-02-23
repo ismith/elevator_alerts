@@ -1,6 +1,7 @@
 <% if login? %>
   <p>Welcome <%= session[:email] %>!</p>
   <p><a href="/subscriptions">Edit your subscriptions</a></p>
+  <p><a href="/notifications">Want to change how we notify you?</a></p>
   <p><a href="/auth/logout" title="Sign-out">Sign-out</a></p>
 <% else %>
   <p>
@@ -36,7 +37,6 @@
 <p>
   <ul>
     <li>Nicer layout</li>
-    <li>Text alerts</li>
     <li>Visualization of outage history</li>
     <li>Vacation mode ("don't send me elevator alerts between these dates")</li>
   </ul>

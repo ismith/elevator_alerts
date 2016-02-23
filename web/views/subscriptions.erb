@@ -1,6 +1,7 @@
 <p>Welcome <%= session[:email] %>!</p>
 
-<a href="/">Back home</a>
+<a href="/">Back home</a><br>
+<a href="/notifications">Want to change how we notify you?</a>
 
 <p>Choose the stations for which you want to receive elevator notifications.
 (Currently supported: <%= @systems.map(&:name).join(', ') %>.)
@@ -29,7 +30,7 @@
   <% end %>
   </ul>
 
-  <input type='submit' text='Save subscriptions'>
+  <input type='submit' value='Save subscriptions'>
   <%= Rack::Csrf.tag(env) %>
 </form><br/>
 

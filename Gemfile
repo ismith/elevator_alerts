@@ -34,6 +34,8 @@ gem 'omniauth-google-oauth2'
 
 gem 'dotenv'
 
+gem 'twilio-ruby'
+
 group :development do
   gem 'dm-sqlite-adapter'
 end

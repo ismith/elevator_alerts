@@ -128,6 +128,13 @@ module Models
     def self.all_closed(opts={})
       all(opts.merge(:ended_at.not => nil))
     end
+
+    # Gets all now-closed outages that were open at the specified time
+    # Doesn't include any currently-open outages
+    def self.all_at_time(time)
+      all(:started_at.lte => time,
+          :ended_at.gte => time)
+    end
   end
 
   class Metric < Base
@@ -152,6 +159,8 @@ module Models
     property :email, String, :index => true
     property :name, String, :required => false
     property :can_see_invisible_systems, Boolean, :default => false
+    property :phone_number, String, :required => false
+    property :phone_number_verified, Boolean, :default => false
 
     timestamps!
 
@@ -160,6 +169,19 @@ module Models
 
     def can_see_invisible_systems?
       !!can_see_invisible_systems
+    end
+
+    def use_phone_number?
+      self.phone_number && self.phone_number_verified
+    end
+
+    def current_notification_address
+      if self.use_phone_number?
+        _, area_code, exchange, extension = self.phone_number.match(/(...)(...)(....)/).to_a
+        "(#{area_code}) #{exchange}-#{extension}"
+      else
+        self.email
+      end
     end
   end
 

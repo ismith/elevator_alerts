@@ -70,7 +70,7 @@ describe Notifier do
 
       it 'should send email indicating that' do
         expect(Email).to receive(:mail).twice do |arg_hash|
-          expect(arg_hash[:body]).to match /All of the elevators you subscribe to are currently in service./
+          expect(arg_hash[:body]).to match /All of your elevators are currently in service./
         end
 
         subject
