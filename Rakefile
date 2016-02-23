@@ -71,7 +71,7 @@ namespace :migrations do
     Models.setup
 
     orig_adding_elevators = ENV['ADDING_ELEVATORS']
-    ENV['ADDING_ELEVATORS'] = 1
+    ENV['ADDING_ELEVATORS'] = '1'
 
     if Models::System.first(:name => "SF Muni")
       puts "You already added the SF Muni system!"
