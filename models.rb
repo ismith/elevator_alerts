@@ -128,6 +128,13 @@ module Models
     def self.all_closed(opts={})
       all(opts.merge(:ended_at.not => nil))
     end
+
+    # Gets all now-closed outages that were open at the specified time
+    # Doesn't include any currently-open outages
+    def self.all_at_time(time)
+      all(:started_at.lte => time,
+          :ended_at.gte => time)
+    end
   end
 
   class Metric < Base

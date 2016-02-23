@@ -1,4 +1,5 @@
 require 'models'
+require 'my_twilio'
 
 class Array
   # https://codereview.stackexchange.com/questions/5863/ruby-function-to-join-array-with-commas-and-a-conjunction
@@ -22,12 +23,29 @@ end
 
 class Notifier
   def self.send_user_elevator_notification!(user, elevators)
-      message = elevator_notification_message(elevators)
+    message = elevator_notification_message(elevators)
 
+    if user.phone_number && user.phone_number_verified
+      send_sms!(user, message)
+    else
+      send_email!(user, message)
+    end
+  end
+
+  def self.send_email!(user, message)
       puts "Sending an email to user #{user.id}..."
       Email.mail(:to => user.email,
-                 :subject => "BART Elevator Alerts",
+                 :subject => "Elevator Alerts",
                  :body => message)
+  end
+
+  def self.send_sms!(user, message)
+    raise StandardError if user.phone_number.nil? || !user.phone_number_verified
+
+    puts "Sending an SMS to user #{user.id} at phone number #{user.phone_number}"
+
+    MyTwilio.send_sms(:to => user.phone_number,
+                      :body => message)
   end
 
   def self.send_elevator_notifications!(elevators)
@@ -65,11 +83,11 @@ class Notifier
     raise ArgumentError unless elevators.is_a?(Array) && elevators.all? { |e| e.class == String }
     case elevators.size
     when 0
-      "All of the elevators you subscribe to are currently in service."
+      "All of your elevators are currently in service."
     when 1
-      "1 elevator you subscribe to is out: #{elevators.first}."
+      "1 of your elevators is out: #{elevators.first}."
     else
-      "#{elevators.size} elevators you subscribe to are out: #{elevators.to_sentence}."
+      "#{elevators.size} of your elevators are out: #{elevators.to_sentence}."
     end
   end
 end

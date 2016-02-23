@@ -65,7 +65,7 @@ end
 
 namespace :migrations do
   desc "Add Muni"
-  task :add_muni do
+  task :m_001_add_muni do
     require 'models'
     require 'my_rollbar'
     Models.setup
@@ -93,6 +93,18 @@ namespace :migrations do
     end
 
     ENV['ADDING_ELEVATORS'] = orig_adding_elevators
+  end
+
+  desc "Remove ' Station' from elevator names"
+  task :m_002_remove_station_from_elevator_names do
+    require 'models'
+    require 'my_rollbar'
+    Models.setup
+
+    Models::Elevator.all(:name.like => "Station").each do |e|
+      e.name.gsub!(/ Station/, '')
+      e.save
+    end
   end
 end
 
