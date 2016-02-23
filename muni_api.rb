@@ -7,7 +7,7 @@ class MuniApi # SF Muni
   MUNI_ENDPOINT = 'http://webservices.nextbus.com/service/publicXMLFeed?command=messages&a=sf-muni'.freeze
 
   def self.get_data
-    response = Faraday.get(MUNI_ENDPOINT)
+    response = Faraday.get(MUNI_ENDPOINT).body
     xml = Nokogiri::XML.parse(body)
 
     messages = xml.xpath('//messages/text').to_a
