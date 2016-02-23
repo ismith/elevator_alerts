@@ -94,7 +94,7 @@ module Models
     end
 
     def self.visible
-      all(:name.not => 'SF Muni')
+      all
     end
 
     timestamps!
