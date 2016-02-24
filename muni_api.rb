@@ -23,8 +23,9 @@ class MuniApi # SF Muni
       e = msg.sub(/No Elevator at/, '')
              .sub(/ Station/, '')
              .sub(/ Sta\.$/, '')
+             .sub(/,\s*[0-9]*/, '')
       if e && e != ''
-        elevator_names << "Muni: #{e}"
+        elevator_names << "Muni: #{e}".gsub(/\s+/, ' ')
       else
         Models::Unparseable.first_or_create(:data => msg)
       end
