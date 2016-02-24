@@ -10,7 +10,7 @@ class MuniApi # SF Muni
     response = Faraday.get(MUNI_ENDPOINT).body
     xml = Nokogiri::XML.parse(response)
 
-    messages = xml.xpath('//messages/text').to_a
+    messages = xml.xpath('//text').to_a
                   .map { |e| e.to_s
                               .gsub(/<.?text>/, '')
                               .gsub(/\s+/, ' ') }
@@ -21,7 +21,8 @@ class MuniApi # SF Muni
     elevator_names = []
     messages.each do |msg|
       e = msg.sub(/No Elevator at/, '')
-             .sub(/ Station/)
+             .sub(/ Station/, '')
+             .stub(/ Sta\.$/, '')
       if e && e != ''
         elevator_names << "Muni: #{e}"
       else
