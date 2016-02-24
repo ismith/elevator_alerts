@@ -22,7 +22,7 @@ class MuniApi # SF Muni
     messages.each do |msg|
       e = msg.sub(/No Elevator at/, '')
              .sub(/ Station/, '')
-             .stub(/ Sta\.$/, '')
+             .sub(/ Sta\.$/, '')
       if e && e != ''
         elevator_names << "Muni: #{e}"
       else
