@@ -16,7 +16,8 @@ class BartApi
          description.nil? ||
          description.empty? )
       puts "UNPARSEABLE: #{response.status}, #{response.body}"
-      Models::Unparseable.first_or_create(:data => response.body, :status_code => response.status.to_i)
+      Models::Unparseable.first_or_create(:data => description, :status_code => response.status.to_i)
+
       return nil
     end
 
