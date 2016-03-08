@@ -16,7 +16,12 @@ class BartApi
          description.nil? ||
          description.empty? )
       puts "UNPARSEABLE: #{response.status}, #{response.body}"
-      Models::Unparseable.first_or_create(:data => description, :status_code => response.status.to_i)
+      if response.body.size > 254
+        data = "large body: #{response.body.size}"
+      else
+        data = response.body.size
+      end
+      Models::Unparseable.first_or_create(:data => data, :status_code => response.status.to_i)
 
       return nil
     end

@@ -28,7 +28,7 @@ describe BartApi do
 
       it 'should save the unparseable body' do
         expect { subject }.to change { Models::Unparseable.count }.by 1
-        expect(Models::Unparseable.last.data).to eql body
+        expect(Models::Unparseable.last.data).to_not be_nil
         expect(Models::Unparseable.last.status_code).to eql status
       end
     end
@@ -41,7 +41,7 @@ describe BartApi do
 
       it 'should save the unparseable body' do
         expect { subject }.to change { Models::Unparseable.count }.by 1
-        expect(Models::Unparseable.last.data).to eql body
+        expect(Models::Unparseable.last.data).to_not be_nil
         expect(Models::Unparseable.last.status_code).to eql status
       end
     end
