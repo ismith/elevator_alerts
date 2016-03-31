@@ -121,6 +121,10 @@ module Models
       self.save
     end
 
+    def length
+      ((ended_at || DateTime.now) - started_at).to_f*24
+    end
+
     def self.all_open(opts={})
       all(opts.merge(:ended_at => nil))
     end

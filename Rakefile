@@ -34,6 +34,33 @@ task :console do
 end
 
 desc "Run worker every 60 seconds"
+task :dump_csv do
+  require 'models'
+  Models.setup
+
+  outages = Hash[
+    Models::Outage.all.group_by(&:elevator_id)
+      .map {|k,v| [Models::Elevator.get(k).name, v]}
+  ]
+
+  outages_to_print = outages.map do |k,v|
+    length = v.map(&:length).reduce(:+).round(2)
+    avg = (length / v.size).round(2)
+    { :elevator => k,
+      :number_outages => v.size,
+      :length_outages => length,
+      :avg_outage_length => avg
+    }
+  end.sort_by {|r| r[:length_outages]}
+     .reverse # Put the most-out elevators at the top
+
+  csv = CSV.generate do |c|
+    c << ['Elevator', 'Number of Outages', 'Total hours out', 'Average outage length']
+    outages_to_print.each {|o| c << o.values}
+  end
+  puts csv
+end
+
 task :worker do
   require 'worker'
   require 'models'
