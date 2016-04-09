@@ -33,7 +33,7 @@ task :console do
   Pry.start
 end
 
-desc "Run worker every 60 seconds"
+desc "Dump raw outage csv"
 task :dump_csv do
   require 'models'
   Models.setup
@@ -137,6 +137,24 @@ namespace :migrations do
     Models::Elevator.all(:name.like => "Station").each do |e|
       e.name.gsub!(/ Station/, '')
       e.save
+    end
+  end
+end
+
+namespace :export do
+  require 'exports'
+  require 'models'
+  Models.setup
+
+  namespace :bart do
+    desc "Raw outage data to csv"
+    task :raw do
+      Exports.bart_raw_outage_dump
+    end
+
+    desc "Elevator data"
+    task :elevator do
+      Exports.bart_elevator_dump
     end
   end
 end
