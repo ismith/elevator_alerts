@@ -6,7 +6,8 @@ unless ENV['RACK_ENV']=='testing'
     c.access_token = ENV["ROLLBAR_ACCESS_TOKEN"]
     c.endpoint = ENV["ROLLBAR_ENDPOINT"]
     c.exception_level_filters.merge!('SignalException' => 'ignore',
-                                     'Sinatra::NotFound' => 'ignore')
+                                     'Sinatra::NotFound' => 'ignore',
+                                     'Interrupt' => 'ignore')
   end
 end
 
