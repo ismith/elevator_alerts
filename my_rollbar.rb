@@ -1,7 +1,7 @@
 require 'rollbar'
 require 'rollbar/request_data_extractor'
 
-unless ENV['RACK_ENV']=='testing'
+unless ENV['RACK_ENV']=='testing' || ENV['NO_ROLL']
   Rollbar.configure do |c|
     c.access_token = ENV["ROLLBAR_ACCESS_TOKEN"]
     c.endpoint = ENV["ROLLBAR_ENDPOINT"]
