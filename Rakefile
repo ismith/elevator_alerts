@@ -142,18 +142,22 @@ namespace :migrations do
 end
 
 namespace :export do
-  require 'exports'
-  require 'models'
-  Models.setup
-
   namespace :bart do
     desc "Raw outage data to csv"
     task :raw do
+      require 'exports'
+      require 'models'
+      Models.setup
+
       Exports.bart_raw_outage_dump
     end
 
     desc "Elevator data"
     task :elevator do
+      require 'exports'
+      require 'models'
+      Models.setup
+
       Exports.bart_elevator_dump
     end
   end
