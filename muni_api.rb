@@ -3,11 +3,18 @@ require 'nokogiri'
 
 require 'models'
 
+class MuniApiError < StandardError; end
+
 class MuniApi # SF Muni
   MUNI_ENDPOINT = 'http://webservices.nextbus.com/service/publicXMLFeed?command=messages&a=sf-muni'.freeze
 
   def self.get_data
-    response = Faraday.get(MUNI_ENDPOINT).body
+    begin
+      response = Faraday.get(MUNI_ENDPOINT).body
+    rescue StandardError => e
+      raise MuniApiError, "ERROR: #{e.class}: #{e.message}"
+    end
+
     xml = Nokogiri::XML.parse(response)
 
     messages = xml.xpath('//text').to_a

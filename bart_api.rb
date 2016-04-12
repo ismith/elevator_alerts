@@ -3,12 +3,18 @@ require 'nokogiri'
 
 require 'models'
 
+class BartApiError < StandardError; end
 class BartApi
   BART_ENDPOINT = 'http://api.bart.gov/api/bsa.aspx?cmd=elev&key=MW9S-E7SL-26DU-VV8V'.freeze
 
   # Hit the BART_ENDPOINT, return the salient string
   def self.get_data
-    response = Faraday.get(BART_ENDPOINT)
+    begin
+      response = Faraday.get(BART_ENDPOINT)
+    rescue StandardError => e
+      raise BartApiError, "ERROR: #{e.class}: #{e.message}"
+    end
+
     body = Nokogiri::XML(response.body)
     description = body.xpath('//bsa/description') rescue nil
 
