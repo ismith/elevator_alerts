@@ -1,6 +1,33 @@
 require 'models'
 
 module Exports
+  def self.outages_at_time(time, elevators)
+    (Models::Outage.count(:started_at.lte => time,
+                         :elevator => elevators,
+                         :ended_at.gte => time) +
+    Models::Outage.count(:started_at.lte => time,
+                         :elevator => elevators,
+                         :ended_at => nil))
+  end
+
+  def self.count_outages_per_fifteen_minutes
+    # Limit to BART elevators for now
+    elevators = self.bart_elevators
+
+    start = DateTime.parse("October 17, 2015").to_time.utc.to_datetime
+    finish = DateTime.now.to_time.utc.to_datetime
+    fifteen_minutes_a_day = 1.to_f/(24*4)
+
+    histogram = Hash.new(0)
+    start.step(finish, fifteen_minutes_a_day).each do |time|
+      puts "[#{start}, #{finish}, #{time}]"
+      outages = self.outages_at_time(time, elevators)
+      histogram[outages] += 1
+    end
+
+    return histogram
+  end
+
   def self.bart_elevators
     Models::System.first(:name => "BART")
                   .stations
