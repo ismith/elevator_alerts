@@ -7,11 +7,10 @@ require 'bart_api'
 require 'muni_api'
 require 'notifier'
 require 'my_rollbar'
-require 'keen'
 
 class Worker
   def self.run!
-    Keen.publish("bartworker_run", {})
+    #Keen.publish("bartworker_run", {})
     # Get data
 
     existing_count = Models::Elevator.count
@@ -50,7 +49,7 @@ class Worker
       Models::Outage.first(:ended_at => nil,
                            :elevator => e)
     end.map do |e|
-      Keen.publish("new_outage", :elevator => e.name)
+      #Keen.publish("new_outage", :elevator => e.name)
       outage = Models::Outage.create(:elevator => e)
 
       outages_to_notify << outage

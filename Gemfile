@@ -26,8 +26,6 @@ gem 'rack_csrf', :require => false
 
 gem 'rack-flash3', :require => false
 
-gem 'keen'
-
 gem 'rack-google-analytics', :require => false
 
 gem 'omniauth-google-oauth2'

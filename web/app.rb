@@ -17,7 +17,6 @@ $LOAD_PATH.unshift f
 require 'models'
 require 'my_rollbar'
 require 'rollbar/middleware/sinatra'
-require 'keen'
 require 'rack-google-analytics'
 
 require 'notifier'

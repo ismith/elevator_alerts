@@ -14,7 +14,6 @@ require 'pony'
 
     Pony.stub(:mail)
 
-    Keen.stub(:publish)
     Rollbar.stub(:error)
     Rollbar.stub(:warn)
     Rollbar.stub(:log)

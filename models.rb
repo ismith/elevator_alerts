@@ -1,7 +1,6 @@
 require 'data_mapper'
 require 'email'
 require 'my_rollbar'
-require 'keen'
 
 DB_STRING_LENGTH=255
 DataMapper::Property::String.length(DB_STRING_LENGTH)
@@ -32,7 +31,7 @@ module Models
     timestamps!
 
     after :create do |unparseable|
-      Keen.publish("create_unparseable", {})
+      #Keen.publish("create_unparseable", {})
 
       Rollbar.error("New unparseable created: #{unparseable.data}")
     end
@@ -52,7 +51,7 @@ module Models
     has n, :users, :through => :station
 
     after :create do |elevator|
-      Keen.publish("create_elevator", :name => elevator.name)
+      #Keen.publish("create_elevator", :name => elevator.name)
 
       Rollbar.error("New elevator created: #{elevator.name}, #{elevator.id}") unless ENV['ADDING_ELEVATORS']
     end
