@@ -2,6 +2,9 @@
 
 <a href="/">Back home</a><br>
 <a href="/notifications">Want to change how we notify you?</a>
+<% if @user.can_submit_reports %>
+  <a href="/reports">Report an elevator problem</a>
+<% end %>
 
 <p>Choose the stations for which you want to receive elevator notifications.
 (Currently supported: <%= @systems.map(&:name).join(', ') %>.)

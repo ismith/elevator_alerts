@@ -2,6 +2,9 @@
 
 <a href="/">Back home</a><br>
 <a href="/subscriptions">Edit subscriptions</a>
+<% if @user.can_submit_reports %>
+  <a href="/reports">Report an elevator problem</a>
+<% end %>
 
 <p>Currently, you get notifications at <%= @user.current_notification_address %>.
 

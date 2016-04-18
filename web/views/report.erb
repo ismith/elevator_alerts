@@ -1,0 +1,37 @@
+<p>Welcome <%= session[:email] %>!</p>
+
+<a href="/">Back home</a>
+
+<p>Report elevator problems here.  (Not outages - we get those automatically -
+but issues like cleanliness, etc.)</p>
+
+<form action='/api/report' method='POST' id="report_form">
+  <table>
+  <tr>
+  <td><label for="station_select">Station</label></td>
+  <td><select id="station_select" name="station">
+    <option disabled selected>Select a station</option>
+    <% Models::System.first(:name => "BART").stations.uniq.each do |station| %>
+      <option value="<%= station.id %>"><%= station.name %></option>
+    <% end %>
+  </select></td>
+  </tr>
+
+  <tr>
+  <td><label for="elevator_select">Elevator</label></td>
+  <td><select id="elevator_select" name="elevator">
+  </select></td>
+  </tr>
+
+  <tr>
+  <td><label for="problem">Problem</label></td>
+  <td><textarea rows="3" id="problem" name="problem"></textarea></td>
+  </tr>
+
+  <tr>
+  <td><label for="submit"></label></td>
+  <td><input type="submit" value="Submit" id="submit"></td>
+  </tr>
+  </table>
+  <%= Rack::Csrf.tag(env) %>
+</form>

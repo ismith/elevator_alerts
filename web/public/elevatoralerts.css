@@ -3,3 +3,11 @@ body {
   margin-left: 20px;
   margin-right: 20px;
 }
+
+table {
+  border-spacing: 50px 0;
+}
+
+td {
+  padding: 3px 5px;
+}

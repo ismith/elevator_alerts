@@ -55,7 +55,8 @@ end
 
 helpers do
   def login?
-    !session[:email].nil?
+    !session[:email].nil? &&
+      @user = Models::User.first_or_create(:email => session[:email])
   end
 
   def audience
@@ -88,8 +89,6 @@ helpers do
       flash[:notice] = msg
       redirect '/'
     end
-
-    @user = Models::User.first_or_create(:email => session[:email])
   end
 end
 
@@ -214,6 +213,45 @@ post '/api/subscriptions' do
   end
 
   redirect '/subscriptions'
+end
+
+get '/reports' do
+  require_login!
+
+  erb :report
+end
+
+post '/api/report' do
+  require_login!
+
+  unless @user.can_submit_reports
+    redirect '/'
+  end
+
+  elevator = Models::Elevator.first(:id => params[:elevator])
+  problem = params[:problem]
+
+  Models::Report.create(
+    :elevator => elevator,
+    :user => @user,
+    :problem => problem
+  )
+
+  flash[:notice] = 'Thanks for the report!'
+  redirect '/reports'
+end
+
+get '/api/bart/elevators.json' do
+  content_type 'application/json'
+
+  system = Models::System.first(:name => "BART")
+  Hash[system.stations.map do |station|
+    [station.id,
+     station.elevators.map do |elevator|
+       { :text => elevator.name,
+         :value => elevator.id }
+     end]
+  end].to_json
 end
 
 # get '/test_error' do

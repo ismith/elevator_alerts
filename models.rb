@@ -155,6 +155,18 @@ module Models
     end
   end
 
+  class Report < Base
+    include DataMapper::Resource
+
+    property :id, Serial, :key => true
+    property :problem, Text
+
+    belongs_to :elevator
+    belongs_to :user
+
+    timestamps!
+  end
+
   class User < Base
     include DataMapper::Resource
 
@@ -164,6 +176,8 @@ module Models
     property :can_see_invisible_systems, Boolean, :default => false
     property :phone_number, String, :required => false
     property :phone_number_verified, Boolean, :default => false
+
+    property :can_submit_reports, Boolean, :default => false
 
     timestamps!
 
