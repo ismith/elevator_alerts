@@ -185,7 +185,7 @@ module Models
     has n, :elevators, :through => :stations
 
     def can_see_invisible_systems?
-      !!can_see_invisible_systems
+      true
     end
 
     def use_phone_number?
