@@ -184,8 +184,12 @@ module Models
     has n, :stations, :through => Resource
     has n, :elevators, :through => :stations
 
-    def can_see_invisible_systems?
+    def can_submit_reports
       true
+    end
+
+    def can_see_invisible_systems?
+      !!can_see_invisible_systems?
     end
 
     def use_phone_number?
