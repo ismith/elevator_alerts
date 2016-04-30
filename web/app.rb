@@ -231,7 +231,7 @@ post '/api/report' do
   elevator = Models::Elevator.first(:id => params[:elevator])
   problem = params[:problem]
 
-  puts "REPORT: #{elevator.id}, #{@user}, #{problem}"
+  Rollbar.error("REPORT: #{elevator.id}, #{@user}, #{problem}")
   Models::Report.create(
     :elevator => elevator,
     :user => @user,
