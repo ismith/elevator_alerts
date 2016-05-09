@@ -235,7 +235,7 @@ post '/api/report' do
 
   puts "REPORT: #{elevator}, #{@user.id}, #{problem_type}, #{problem}"
   unless problem_type == 'no problem'
-    Rollbar.error("REPORT: #{elevator}, #{@user}, #{problem_type}, #{problem}")
+    Rollbar.error("REPORT: #{elevator}, #{@user.id}, #{problem_type}, #{problem}")
   end
 
   Models::Report.create(
