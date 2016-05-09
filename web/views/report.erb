@@ -2,8 +2,7 @@
 
 <a href="/">Back home</a>
 
-<p>Report elevator problems here.  (Not outages - we get those automatically -
-but issues like cleanliness, etc.)</p>
+<p>Report elevator problems here.</p>
 
 <form action='/api/report' method='POST' id="report_form">
   <table>
@@ -27,6 +26,7 @@ but issues like cleanliness, etc.)</p>
   <td><label for="problem_type">Problem</label></td>
   <td><select id="problem_type" name="problem_type">
         <option value="no problem">no problem</option>
+        <option value="elevator outage">elevator outage</option>
         <option value="urine/feces">urine/feces</option>
         <option value="broken accessible faregate">broken accessible faregate</option>
         <option value="other">other</option>
