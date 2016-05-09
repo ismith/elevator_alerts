@@ -207,7 +207,7 @@ module Models
     end
 
     def can_see_invisible_systems?
-      !!can_see_invisible_systems?
+      !!can_see_invisible_systems
     end
 
     def use_phone_number?
