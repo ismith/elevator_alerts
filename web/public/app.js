@@ -32,8 +32,12 @@ jQuery(function($) {
   });
   $('#report_form').validate({
     rules: {
-      problem: { required: true },
-      elevator: { required: true }
+      // 'problem' no longer required b/c we accept 'no problem' as a type
+      //problem: { required: true },
+
+      // adding 'accessible faregate' means elevator is not necessarily required
+      //elevator: { required: true }
+      station: { required: true }
     }
   });
 
@@ -46,6 +50,22 @@ jQuery(function($) {
   $('#station_select').on('change', function() {
     station_id = this.value
     new_options = station_to_elevators[station_id];
+    new_options.push({ text: 'Faregate',
+                       value: 0 });
     $('#elevator_select').replaceOptions(new_options);
+  });
+
+  // if the user selects 'broken accessible faregate', set the #elevator value
+  // to 0 to match
+  $('#problem_type').on('change', function() {
+    if(this.value == 'broken accessible faregate') {
+      $('#elevator_select').val(0);
+    }
+  });
+
+  $('#elevator_select').on('change', function() {
+    if(this.value == 0) {
+      $('#problem_type').val('broken accessible faregate');
+    }
   });
 });

@@ -228,20 +228,28 @@ post '/api/report' do
     redirect '/'
   end
 
-  elevator = Models::Elevator.first(:id => params[:elevator])
-  problem = params[:problem]
+  elevator = params[:elevator]
 
-  Rollbar.error("REPORT: #{elevator.id}, #{@user}, #{problem}")
+  problem = params[:problem]
+  problem_type = params[:problem_type]
+
+  puts "REPORT: #{elevator}, #{@user.id}, #{problem_type}, #{problem}"
+  unless problem_type == 'no problem'
+    Rollbar.error("REPORT: #{elevator}, #{@user}, #{problem_type}, #{problem}")
+  end
+
   Models::Report.create(
-    :elevator => elevator,
+    :elevator_id => elevator, # we don't instantiate the elevator record bc it is sometimes 0 or nil
     :user => @user,
-    :problem => problem
+    :problem => problem,
+    :problem_type => problem_type
   )
 
   flash[:notice] = 'Thanks for the report!'
   redirect '/reports'
 end
 
+# Only BART for now because that's where we're accepting reports
 get '/api/bart/elevators.json' do
   content_type 'application/json'
 

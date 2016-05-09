@@ -159,12 +159,30 @@ module Models
     include DataMapper::Resource
 
     property :id, Serial, :key => true
+    property :problem_type, String
     property :problem, Text
+    property :elevator_id, Integer
 
-    belongs_to :elevator
     belongs_to :user
 
     timestamps!
+
+    def elevator
+      if elevator_id.zero?
+        0
+      else
+        Models::Elevator.first(id: elevator_id)
+      end
+    end
+
+    def elevator=(e)
+      case e
+      when Integer, String
+        elevator_id = e
+      when Models::Elevator
+        elevator_id = e.id
+      end
+    end
   end
 
   class User < Base
