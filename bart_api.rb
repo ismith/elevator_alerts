@@ -42,8 +42,14 @@ class BartApi
                      .strip
   end
 
-  MATCH_SINGLE = %r{There is (one) elevator out of service at this time: (.*)\.?$}.freeze
-  MATCH_MULTIPLE = %r{There are ([^ ]*) elevators out of service at this time: (.*)\.?$}.freeze
+  MATCH_SINGLE = [
+    %r{There is (one) elevator out of service at this time: (.*)\.?$},
+    %r{The elevator at (.*) is out of service$}
+  ].freeze
+  MATCH_MULTIPLE = [
+    %r{There are ([^ ]*) elevators out of service at this time: (.*)\.?$},
+    %r{The following elevators are out of service: (.*)}
+  ].freeze
   MATCH_NONE = [
     %r{There are no elevators out of service at this time},
     %r{Attention passengers: All elevators are in service Thank You}
@@ -60,17 +66,38 @@ class BartApi
     data.strip!
     data.sub!(/\.$/, '')
 
+    # This could use some clean up
     elevator_strings = case data
     when *MATCH_NONE
       return []
-    when MATCH_SINGLE
-      return [ data.match(MATCH_SINGLE)[2] ]
-    when MATCH_MULTIPLE
-      return data.match(MATCH_MULTIPLE)[2].split(SPLIT)
-                                          .reject { |s| s =~ SPLIT }
+    when MATCH_SINGLE[0]
+      [ data.match(MATCH_SINGLE[0])[2] ]
+    when MATCH_SINGLE[1]
+      [ data.match(MATCH_SINGLE[1])[1] ]
+    when MATCH_MULTIPLE[0]
+      data.match(MATCH_MULTIPLE[0])[2].split(SPLIT)
+                                             .reject { |s| s =~ SPLIT }
+    when MATCH_MULTIPLE[1]
+      data.match(MATCH_MULTIPLE[1])[1].split(SPLIT)
+                                             .reject { |s| s =~ SPLIT }
     else
       Models::Unparseable.first_or_create(:data => data)
       return []
+    end
+
+    elevator_strings.map {|s| self.elevator_normalizer(s) }
+  end
+
+  # This could also use cleanup - maybe an inverted hash?  Or more regex?
+  def self.elevator_normalizer(str)
+    if ["Bayfair (platform)", "Bayfair platform elevator"].include?(str)
+      "Bay Fair Platform Elevator"
+    elsif str == "Pleasant Hill (Bay point platform)"
+      "Pleasant Hill Bay Point Platform Elevator"
+    elsif str == "ElCerritto Plaza (San Francisco/Fremont platform)"
+      "El Cerrito Plaza SF/Fremont Platform Elevator"
+    else
+      str
     end
   end
 

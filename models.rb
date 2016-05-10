@@ -27,6 +27,7 @@ module Models
     property :id, Serial, :key => true
     property :data, String, :required => true
     property :status_code, Integer
+    property :resolved, String, :required => false
 
     timestamps!
 

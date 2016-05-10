@@ -92,5 +92,19 @@ describe BartApi do
         expect(failures).to be_empty
       end
     end
+
+    context 'unparseable 1' do
+      let(:input) { "The elevator at Bayfair platform elevator is out of service" }
+
+      it { should eql ["Bay Fair Platform Elevator"] }
+    end
+
+    context 'unparseable 2' do
+      let(:input) { "The following elevators are out of service: Bayfair (platform), Pleasant Hill (Bay point platform), ElCerritto Plaza (San Francisco/Fremont platform)" }
+
+      it { should eql ["Bay Fair Platform Elevator",
+                       "Pleasant Hill Bay Point Platform Elevator",
+                       "El Cerrito Plaza SF/Fremont Platform Elevator"] }
+    end
   end
 end
