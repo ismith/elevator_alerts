@@ -229,6 +229,7 @@ post '/api/report' do
   end
 
   elevator = params[:elevator]
+  station = params[:station]
 
   problem = params[:problem]
   problem_type = params[:problem_type]
@@ -242,7 +243,8 @@ post '/api/report' do
     :elevator_id => elevator, # we don't instantiate the elevator record bc it is sometimes 0 or nil
     :user => @user,
     :problem => problem,
-    :problem_type => problem_type
+    :problem_type => problem_type,
+    :station_id => station
   )
 
   flash[:notice] = 'Thanks for the report!'

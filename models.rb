@@ -162,6 +162,7 @@ module Models
     property :problem_type, String
     property :problem, Text
     property :elevator_id, Integer
+    property :station_id, Integer # optional, only needed if faregate report
 
     belongs_to :user
 
