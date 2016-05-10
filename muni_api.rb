@@ -30,6 +30,7 @@ class MuniApi # SF Muni
       e = msg.sub(/No Elevator at/, '')
              .sub(/ Station/, '')
              .sub(/ Sta\.$/, '')
+             .sub(/ street level elevator Out of Service/i, '')
       if e && e != ''
         elevator_names << "Muni: #{e}".gsub(/\s+/, ' ')
       else
