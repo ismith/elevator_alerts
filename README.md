@@ -22,6 +22,12 @@ foreman run rake console
 ## Initial data import
 TODO
 
+## Auth setup
+For development mode, auth is handled locally by redirecting you to
+`/auth/developer`, which will accept any email address and name it is given.
+You should configure Google OAuth before deploying, instructions for which are
+found below.
+
 ## Running the app
 You can run either of `foreman run web` or `foreman run worker` or both; they
 are independent, with `web` running the webapp and `worker` being used to query

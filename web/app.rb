@@ -22,6 +22,7 @@ require 'rack-google-analytics'
 require 'notifier'
 
 require 'omniauth-google-oauth2'
+require 'auth'
 
 require 'authy'
 
@@ -38,11 +39,8 @@ use Rack::Session::EncryptedCookie, :secret => ENV['SESSION_SECRET'],
                                     :domain => domain,
                                     :httponly => true
 
-CSRF_SKIP = ['POST:/auth/login']
-# We're using the insecure developer auth strategy
-unless ENV['GOOGLE_CLIENT_ID'] && ENV['GOOGLE_CLIENT_SECRET']
-  CSRF_SKIP << 'POST:/auth/developer/callback'
-end
+CSRF_SKIP = ['POST:/auth/login',
+             'POST:/auth/developer/callback'].freeze
 use Rack::Csrf, :skip => CSRF_SKIP,
                 :raise => true
 
@@ -55,18 +53,7 @@ if ENV['GOOGLE_ANALYTICS_KEY']
 end
 
 use OmniAuth::Builder do
-  if ENV['GOOGLE_CLIENT_ID'] && ENV['GOOGLE_CLIENT_SECRET']
-    provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'],
-      :scope => 'email, openid',
-      :prompt => 'select_account',
-      :name => 'login'
-  else
-    warn "USING DEVELOPER_AUTH STRATEGY! This is *insecure* and should *never* be used off of localhost.  Look in the readme for `GOOGLE_CLIENT_ID` and follow the instructions there."
-
-    provider :developer,
-      :fields => [:email, :name],
-      :uid_field => :email
-  end
+  provider *Auth.provider_opts
 end
 
 helpers do
@@ -112,26 +99,13 @@ get "/" do
   erb :index
 end
 
-# We need these routes if we're using the :developer strategy instead of
-# google-oauth2
-unless ENV['GOOGLE_CLIENT_ID'] && ENV['GOOGLE_CLIENT_SECRET']
+if Auth.strategy == :developer
   get '/auth/login' do
     redirect '/auth/developer'
   end
 
   post '/auth/developer/callback' do
-    session[:email] = env['omniauth.auth'][:info][:email]
-    session[:name] = env['omniauth.auth'][:info][:name]
-
-    @user = Models::User.first_or_create(:email => session[:email])
-
-    # If we didn't have a user's name before, save it
-    if @user.name != session[:name]
-      @user.name = session[:name]
-      @user.save
-    end
-
-    redirect '/'
+    instance_eval &Auth.callback_block
   end
 end
 
@@ -141,18 +115,7 @@ get "/auth/logout" do
 end
 
 get "/auth/login/callback" do
-  session[:email] = env['omniauth.auth'][:info][:email]
-  session[:name] = env['omniauth.auth'][:info][:name]
-
-  @user = Models::User.first_or_create(:email => session[:email])
-
-  # If we didn't have a user's name before, save it
-  if @user.name != session[:name]
-    @user.name = session[:name]
-    @user.save
-  end
-
-  redirect "/"
+  instance_eval &Auth.callback_block
 end
 
 get '/subscriptions' do
