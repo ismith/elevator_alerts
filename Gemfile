@@ -34,6 +34,8 @@ gem 'dotenv'
 
 gem 'twilio-ruby'
 
+gem 'hashie'
+
 group :development do
   gem 'dm-sqlite-adapter'
   gem 'foreman'

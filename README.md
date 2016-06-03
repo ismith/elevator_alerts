@@ -16,11 +16,11 @@ You'll need postgres installed; that is left as an exercise for the reader.
 Once you've done that, run:
 ```
 createdb elevator_alerts
-foreman run rake console
+foreman run rake dev:load_seed_data['./data/seed.json']
 ```
 
-## Initial data import
-TODO
+(If you want to start over: `echo "DROP DATABASE elevator_alerts" | psql`, and
+then run the above again.)
 
 ## Auth setup
 For development mode, auth is handled locally by redirecting you to

@@ -208,6 +208,7 @@ DEPENDENCIES
   encrypted_cookie
   faraday
   foreman
+  hashie
   json
   nokogiri
   omniauth-google-oauth2

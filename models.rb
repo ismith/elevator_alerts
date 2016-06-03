@@ -1,6 +1,7 @@
 require 'data_mapper'
 require 'email'
 require 'my_rollbar'
+require 'hashie'
 
 DB_STRING_LENGTH=255
 DataMapper::Property::String.length(DB_STRING_LENGTH)
@@ -62,6 +63,12 @@ module Models
     def self.stationless
       all(:station => nil)
     end
+
+    def to_h
+      {
+        :name => name
+      }
+    end
   end
 
   class Station < Base
@@ -77,6 +84,13 @@ module Models
     has n, :users, :through => Resource
 
     timestamps!
+
+    def to_h
+      {
+        :name => name,
+        :elevators => elevators.map(&:to_h)
+      }
+    end
   end
 
   class System < Base
@@ -95,6 +109,13 @@ module Models
 
     def self.visible
       all
+    end
+
+    def to_h
+      {
+        :name => name,
+        :stations => stations.map(&:to_h)
+      }
     end
 
     timestamps!
@@ -238,5 +259,40 @@ module Models
     DataMapper.finalize
 
     DataMapper.auto_upgrade! unless ENV['RACK_ENV'] == 'testing'
+  end
+
+  def self.seed_hash
+    {
+      :systems => Models::System.all.map(&:to_h),
+      :date => DateTime.now.iso8601
+    }
+  end
+
+  def self.from_seed_hash(seed_hash)
+    Hashie.symbolize_keys!(seed_hash)
+
+    seed_hash[:systems].each do |system|
+      puts "Importing system: #{system[:name]}..."
+      system_model = Models::System.first_or_create(:name => system[:name])
+      system[:stations].map do |station|
+        puts "Importing station: #{station[:name]}..."
+        station_model = Models::Station.first_or_create(:name => station[:name])
+        station_model.systems = [system_model]
+        station_model.save
+
+        station[:elevators].map do |elevator|
+          puts "Importing elevator: #{elevator[:name]}..."
+          Models::Elevator.first_or_create(:name => elevator[:name],
+                                           :station => station_model)
+        end
+      end
+    end
+
+    puts "And adding one 'faregate' dummy elevator, since that's used by the /report form ..."
+    DataMapper.repository.adapter.execute(
+      "INSERT INTO elevators (id, name, created_at, updated_at)
+       VALUES (0, 'faregate', NOW(), NOW())"
+    )
+    puts "DONE IMPORTING DATA."
   end
 end

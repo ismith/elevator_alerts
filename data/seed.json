@@ -1,0 +1,564 @@
+{
+  "systems": [
+    {
+      "name": "BART",
+      "stations": [
+        {
+          "name": "12th St Oakland City Center",
+          "elevators": [
+            {
+              "name": "12th St Oakland Ogawa Plaza Elevator"
+            },
+            {
+              "name": "12th St Oakland Street Elevator"
+            },
+            {
+              "name": "12th St Oakland Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "16th St Mission",
+          "elevators": [
+            {
+              "name": "16th St Mission Platform Elevator"
+            },
+            {
+              "name": "16th St Mission Street Elevator"
+            }
+          ]
+        },
+        {
+          "name": "19th St Oakland",
+          "elevators": [
+            {
+              "name": "19th St Oakland Street Elevator"
+            },
+            {
+              "name": "19th St Oakland Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "24th St Mission",
+          "elevators": [
+            {
+              "name": "24th St Mission Platform Elevator"
+            },
+            {
+              "name": "24th St Mission Street Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Ashby",
+          "elevators": [
+            {
+              "name": "Ashby Platform Elevator"
+            },
+            {
+              "name": "Ashby Street Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Balboa Park",
+          "elevators": [
+            {
+              "name": "Balboa Park Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Bay Fair",
+          "elevators": [
+            {
+              "name": "Bay Fair Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Castro Valley",
+          "elevators": [
+            {
+              "name": "Castro Valley Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Civic Center/UN Plaza",
+          "elevators": [
+            {
+              "name": "Civic Center Street Elevator"
+            },
+            {
+              "name": "Civic Center Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Coliseum",
+          "elevators": [
+            {
+              "name": "Coliseum Platform Elevator"
+            },
+            {
+              "name": "Coliseum Airport Connector Elevator"
+            },
+            {
+              "name": "Coliseum Walkway Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Colma",
+          "elevators": [
+            {
+              "name": "Colma SF/East Bay Platform Elevator"
+            },
+            {
+              "name": "Colma Platform 3 Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Concord",
+          "elevators": [
+            {
+              "name": "Concord Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Daly City",
+          "elevators": [
+            {
+              "name": "Daly City Both Tunnel Elevators"
+            },
+            {
+              "name": "Daly City SF/East Bay Platform Elevator"
+            },
+            {
+              "name": "Daly City SF Airport/Millbrae Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Downtown Berkeley",
+          "elevators": [
+            {
+              "name": "Berkeley Platform Elevator"
+            },
+            {
+              "name": "Berkeley Street Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Dublin/Pleasanton",
+          "elevators": [
+            {
+              "name": "Dublin/Pleasanton Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "El Cerrito del Norte",
+          "elevators": [
+            {
+              "name": "El Cerrito del Norte SF/Fremont Platform Elevator"
+            },
+            {
+              "name": "El Cerrito del Norte Richmond Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "El Cerrito Plaza",
+          "elevators": [
+            {
+              "name": "El Cerrito Plaza SF/Fremont Platform Elevator"
+            },
+            {
+              "name": "El Cerrito Plaza Richmond Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Embarcadero",
+          "elevators": [
+            {
+              "name": "Embarcadero Street Elevator"
+            },
+            {
+              "name": "Embarcadero Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Fremont",
+          "elevators": [
+            {
+              "name": "Fremont Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Fruitvale",
+          "elevators": [
+            {
+              "name": "Fruitvale SF/Richmond Platform Elevator"
+            },
+            {
+              "name": "Fruitvale Fremont/Dublin Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Glen Park",
+          "elevators": [
+            {
+              "name": "Glen Park Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Hayward",
+          "elevators": [
+            {
+              "name": "Hayward SF/Richmond Platform Elevator"
+            },
+            {
+              "name": "Hayward Fremont Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Lafayette",
+          "elevators": [
+            {
+              "name": "Lafayette Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Lake Merritt",
+          "elevators": [
+            {
+              "name": "Lake Merritt Platform Elevator"
+            },
+            {
+              "name": "Lake Merritt Street Elevator"
+            }
+          ]
+        },
+        {
+          "name": "MacArthur",
+          "elevators": [
+            {
+              "name": "MacArthur SF/Fremont Platform Elevator"
+            },
+            {
+              "name": "MacArthur Richmond/Bay Point Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Millbrae",
+          "elevators": [
+            {
+              "name": "Millbrae SF/EastBay Platform Elevator"
+            },
+            {
+              "name": "Millbrae SF/EastBay/Caltrain Platform Elevator"
+            },
+            {
+              "name": "Millbrae Caltrain Street Elevator"
+            },
+            {
+              "name": "Millbrae SF Airport Platform Elevator"
+            },
+            {
+              "name": "Millbrae BART Street Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Montgomery St",
+          "elevators": [
+            {
+              "name": "Montgomery Platform Elevator"
+            },
+            {
+              "name": "Montgomery Street Elevator"
+            }
+          ]
+        },
+        {
+          "name": "North Berkeley",
+          "elevators": [
+            {
+              "name": "North Berkeley Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "North Concord/Martinez",
+          "elevators": [
+            {
+              "name": "North Concord Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Oakland Intl Airport",
+          "elevators": [
+            {
+              "name": "Oakland Airport Both Station Elevators"
+            },
+            {
+              "name": "Oakland Int'l Airport"
+            },
+            {
+              "name": "Oakland Int'l Airport Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Orinda",
+          "elevators": [
+            {
+              "name": "Orinda Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Pittsburg/Bay Point",
+          "elevators": [
+            {
+              "name": "Pittsburg/Bay Point Street Elevator"
+            },
+            {
+              "name": "Pittsburg/Bay Point Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Pleasant Hill/Contra Costa Centre",
+          "elevators": [
+            {
+              "name": "Pleasant Hill Bay Point Platform Elevator"
+            },
+            {
+              "name": "Pleasant Hill SF/Millbrae Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Powell St",
+          "elevators": [
+            {
+              "name": "Powell Platform Elevator"
+            },
+            {
+              "name": "Powell Street Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Richmond",
+          "elevators": [
+            {
+              "name": "Richmond Street Elevator"
+            },
+            {
+              "name": "Richmond AMTRAK Elevator"
+            },
+            {
+              "name": "Richmond Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Rockridge",
+          "elevators": [
+            {
+              "name": "Rockridge Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "San Bruno",
+          "elevators": [
+            {
+              "name": "San Bruno Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "SFO",
+          "elevators": [
+            {
+              "name": "San Francisco Airport Platform 1 to Airtrain Elevator"
+            },
+            {
+              "name": "San Francisco Airport Platform 3 to Airtrain Elevator"
+            }
+          ]
+        },
+        {
+          "name": "San Leandro",
+          "elevators": [
+            {
+              "name": "San Leandro SF/Richmond Platform Elevator"
+            },
+            {
+              "name": "San Leandro Fremont/Dublin Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "South Hayward",
+          "elevators": [
+            {
+              "name": "South Hayward SF/Richmond Platform Elevator"
+            },
+            {
+              "name": "South Hayward Fremont Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "South San Francisco",
+          "elevators": [
+            {
+              "name": "South San Francisco Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Union City",
+          "elevators": [
+            {
+              "name": "Union City SF/Richmond Platform Elevator"
+            },
+            {
+              "name": "Union City Fremont Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "Walnut Creek",
+          "elevators": [
+            {
+              "name": "Walnut Creek SF/Millbrae Platform Elevator"
+            },
+            {
+              "name": "Walnut Creek Bay Point Platform Elevator"
+            }
+          ]
+        },
+        {
+          "name": "West Dublin/Pleasanton",
+          "elevators": [
+            {
+              "name": "W Dublin/Pleasanton Station Elevator"
+            }
+          ]
+        },
+        {
+          "name": "West Oakland",
+          "elevators": [
+            {
+              "name": "West Oakland East Bay Platform Elevator"
+            },
+            {
+              "name": "West Oakland SF/Millbrae Platform Elevator"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SF Muni",
+      "stations": [
+        {
+          "name": "Muni: Castro",
+          "elevators": [
+            {
+              "name": "Muni: Castro"
+            }
+          ]
+        },
+        {
+          "name": "Muni: Church",
+          "elevators": [
+            {
+              "name": "Muni: Church"
+            },
+            {
+              "name": "Muni: Church Outbound"
+            }
+          ]
+        },
+        {
+          "name": "Muni: Civic Center",
+          "elevators": [
+            {
+              "name": "Muni: Civic Center"
+            }
+          ]
+        },
+        {
+          "name": "Muni: Embarcadero",
+          "elevators": [
+            {
+              "name": "Muni: Embarcadero"
+            }
+          ]
+        },
+        {
+          "name": "Muni: Forest Hill",
+          "elevators": [
+            {
+              "name": "Muni: Forest Hill"
+            }
+          ]
+        },
+        {
+          "name": "Muni: Montgomery",
+          "elevators": [
+            {
+              "name": "Muni: Montgomery"
+            }
+          ]
+        },
+        {
+          "name": "Muni: Powell",
+          "elevators": [
+            {
+              "name": "Muni: Powell"
+            }
+          ]
+        },
+        {
+          "name": "Muni: Van Ness",
+          "elevators": [
+            {
+              "name": "Muni: Van Ness"
+            }
+          ]
+        },
+        {
+          "name": "Muni: West Portal",
+          "elevators": [
+            {
+              "name": "Muni: West Portal"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "date": "2016-06-03T17:15:51-07:00"
+}
