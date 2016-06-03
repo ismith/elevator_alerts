@@ -8,16 +8,17 @@ require 'rspec/core/rake_task'
 rescue LoadError
 end
 
-if ENV['DOTENV'] # Not needed if we have heroku/heroku local
-  require 'dotenv'
-  Dotenv.load
-end
+#if ENV['DOTENV'] # Not needed if we have heroku/heroku local
+#  require 'dotenv'
+#  Dotenv.load
+#end
 
 $stdout.sync = true
 
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 
 require 'rake'
+require 'ext'
 
 desc "Pry console"
 task :console do
@@ -91,6 +92,20 @@ task :current do
   puts "Current outages: #{Models::Outage.all_open.count}, #{Models::Outage.all_open.to_a.map(&:elevator).map(&:name).join(", ")}"
   puts "Unparseables: #{Models::Unparseable.count}"
   puts "Users: #{Models::User.count}"
+end
+
+namespace :dev do
+  desc "Check that all required env keys are set"
+  task :check_environment do
+    require 'environment'
+    Environment.check_env
+  end
+
+  desc "Generate a new session secret"
+  task :session_secret do
+    require 'environment'
+    puts Environment.new_session_secret
+  end
 end
 
 namespace :migrations do

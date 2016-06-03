@@ -7,10 +7,10 @@ require 'rack-canonical-host'
 require 'rack/csrf'
 require 'rack-flash'
 
-if ENV['DOTENV'] # Not needed if we have heroku/heroku local
-  require 'dotenv'
-  Dotenv.load
-end
+#if ENV['DOTENV'] # Not needed if we have heroku/heroku local
+#  require 'dotenv'
+#  Dotenv.load
+#end
 
 f= File.join(File.dirname(File.expand_path(__FILE__)), '..')
 $LOAD_PATH.unshift f
@@ -37,20 +37,36 @@ domain = ENV['SESSION_DOMAIN'] unless ENV['SESSION_DOMAIN'] == 'localhost'
 use Rack::Session::EncryptedCookie, :secret => ENV['SESSION_SECRET'],
                                     :domain => domain,
                                     :httponly => true
-use Rack::Csrf, :skip => ['POST:/auth/login'],
+
+CSRF_SKIP = ['POST:/auth/login']
+# We're using the insecure developer auth strategy
+unless ENV['GOOGLE_CLIENT_ID'] && ENV['GOOGLE_CLIENT_SECRET']
+  CSRF_SKIP << 'POST:/auth/developer/callback'
+end
+use Rack::Csrf, :skip => CSRF_SKIP,
                 :raise => true
 
 disable :show_exceptions
 
 use Rack::Flash, :sweep => true
 
-use Rack::GoogleAnalytics, :tracker => ENV['GOOGLE_ANALYTICS_KEY']
+if ENV['GOOGLE_ANALYTICS_KEY']
+  use Rack::GoogleAnalytics, :tracker => ENV['GOOGLE_ANALYTICS_KEY']
+end
 
 use OmniAuth::Builder do
-  provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'],
-    :scope => 'email, openid',
-    :prompt => 'select_account',
-    :name => 'login'
+  if ENV['GOOGLE_CLIENT_ID'] && ENV['GOOGLE_CLIENT_SECRET']
+    provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'],
+      :scope => 'email, openid',
+      :prompt => 'select_account',
+      :name => 'login'
+  else
+    warn "USING DEVELOPER_AUTH STRATEGY! This is *insecure* and should *never* be used off of localhost.  Look in the readme for `GOOGLE_CLIENT_ID` and follow the instructions there."
+
+    provider :developer,
+      :fields => [:email, :name],
+      :uid_field => :email
+  end
 end
 
 helpers do
@@ -94,6 +110,29 @@ end
 
 get "/" do
   erb :index
+end
+
+# We need these routes if we're using the :developer strategy instead of
+# google-oauth2
+unless ENV['GOOGLE_CLIENT_ID'] && ENV['GOOGLE_CLIENT_SECRET']
+  get '/auth/login' do
+    redirect '/auth/developer'
+  end
+
+  post '/auth/developer/callback' do
+    session[:email] = env['omniauth.auth'][:info][:email]
+    session[:name] = env['omniauth.auth'][:info][:name]
+
+    @user = Models::User.first_or_create(:email => session[:email])
+
+    # If we didn't have a user's name before, save it
+    if @user.name != session[:name]
+      @user.name = session[:name]
+      @user.save
+    end
+
+    redirect '/'
+  end
 end
 
 get "/auth/logout" do
@@ -256,6 +295,8 @@ get '/api/bart/elevators.json' do
   content_type 'application/json'
 
   system = Models::System.first(:name => "BART")
+  halt 404 if system.nil?
+
   Hash[system.stations.map do |station|
     [station.id,
      station.elevators.map do |elevator|

@@ -36,6 +36,7 @@ gem 'twilio-ruby'
 
 group :development do
   gem 'dm-sqlite-adapter'
+  gem 'foreman'
 end
 
 group :test do
