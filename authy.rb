@@ -6,6 +6,9 @@ class Authy
   VERIFY_ENDPOINT = "https://api.authy.com/protected/json/phones/verification/check".freeze
 
   def self.submit_number(number)
+    # Running locally, we may not care about actually verifying
+    return true unless ENV['AUTHY_API_KEY']
+
     connection = Faraday.new(:url => START_ENDPOINT)
     raw_resp = connection.post do |req|
       req.headers['Content-Type'] = 'application/json'
@@ -27,6 +30,9 @@ class Authy
   end
 
   def self.verify_number(number, verification_code)
+    # Running locally, we may not care about actually verifying
+    return true unless ENV['AUTHY_API_KEY']
+
     connection = Faraday.new(:url => VERIFY_ENDPOINT)
     raw_resp = connection.get do |req|
       req.body = {
