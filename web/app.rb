@@ -7,11 +7,6 @@ require 'rack-canonical-host'
 require 'rack/csrf'
 require 'rack-flash'
 
-#if ENV['DOTENV'] # Not needed if we have heroku/heroku local
-#  require 'dotenv'
-#  Dotenv.load
-#end
-
 f= File.join(File.dirname(File.expand_path(__FILE__)), '..')
 $LOAD_PATH.unshift f
 require 'models'

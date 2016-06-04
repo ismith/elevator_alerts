@@ -30,8 +30,6 @@ gem 'rack-google-analytics', :require => false
 
 gem 'omniauth-google-oauth2'
 
-gem 'dotenv'
-
 gem 'twilio-ruby'
 
 gem 'hashie'

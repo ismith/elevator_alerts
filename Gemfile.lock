@@ -80,7 +80,6 @@ GEM
       data_objects (= 0.10.16)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
-    dotenv (2.1.0)
     encrypted_cookie (0.0.4)
     erubis (2.7.0)
     faraday (0.9.1)
@@ -204,7 +203,6 @@ DEPENDENCIES
   datamapper
   dm-postgres-adapter
   dm-sqlite-adapter
-  dotenv
   encrypted_cookie
   faraday
   foreman

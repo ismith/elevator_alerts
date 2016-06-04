@@ -8,11 +8,6 @@ require 'rspec/core/rake_task'
 rescue LoadError
 end
 
-#if ENV['DOTENV'] # Not needed if we have heroku/heroku local
-#  require 'dotenv'
-#  Dotenv.load
-#end
-
 $stdout.sync = true
 
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
