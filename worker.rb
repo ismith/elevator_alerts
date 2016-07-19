@@ -8,6 +8,17 @@ require 'muni_api'
 require 'notifier'
 require 'my_rollbar'
 
+# BART's API is now making state changes not from A -> B, but from A -> {} -> B,
+# which means you get a sequence of:
+# 1) "X, Y, Z out of service"
+# 2) "All in service"
+# 3) "X, Y, Z out of service"
+#
+# So, now, if $bart_all_working was true before, and is true now, then we update
+# outage status (and send notifications).  If it was false before, we skip - it
+# may be a fluke.
+$bart_all_working = false
+
 class Worker
   def self.run!
     #Keen.publish("bartworker_run", {})
@@ -36,15 +47,24 @@ class Worker
     # End outages that are over
     # Conditional is here because all(:foo.not => []) doesn't do the intuitively
     # obvious thing
-    if out_elevators.empty?
+    if out_elevators.empty? && $bart_all_working == false
+      puts "SKIPPING NOTIFICATIONS BECAUSE $bart_all_working == false"
+      # Flag that our last state was "everything working", and next time (if
+      # that's still true) we'll update the DB and send notifications)
+      $bart_all_working = true
+      return
+    elsif out_elevators.empty? && $bart_all_working == true
+      puts "NOT SKIPPING NOTIFICATIONS BECAUSE $bart_all_working == true"
       outages_to_end = Models::Outage.all_open
     else
+      puts "Setting $bart_all_working = false if it wasn't already"
+      $bart_all_working = false
       outages_to_end = Models::Outage.all_open(:elevator.not => out_elevators)
     end
     outages_to_end.each(&:end!)
     outages_to_notify = outages_to_end
 
-    # Open outaages that need opening
+    # Open outages that need opening
     out_elevators.reject do |e|
       Models::Outage.first(:ended_at => nil,
                            :elevator => e)
@@ -60,7 +80,7 @@ class Worker
     elevators_to_notify = outages_to_notify.to_a.map(&:elevator).uniq
 
     puts "Elevators to notify: #{elevators_to_notify.size}."
-    Notifier.send_elevator_notifications!(elevators_to_notify)
+    Notifier.send_elevator_notifications!(elevators_to_notify) unless elevators_to_notify.empty?
   end
 end
 
