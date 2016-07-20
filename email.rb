@@ -1,4 +1,5 @@
 require 'pony'
+require 'json'
 
 Pony.options = {
   :from => 'noreply@elevatoralerts.com',
