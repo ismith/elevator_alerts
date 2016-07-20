@@ -32,6 +32,9 @@ Transitions are:
   </form>
 <% elsif @user.phone_number && !@user.phone_number_verified %>
   <p>You should have gotten a text message with a verification code; enter it here.</p>
+  <% unless ENV['AUTHY_API_KEY'] %>
+    <p>Since authy is not enabled in this environment, any verification code here will be accepted.</p>
+  <% end %>
   <form id='verify_form' action='/api/notifications/verify' method='POST'>
     <p>Verification code: <input id='verification_code' type='text' name='verification_code'></p>
     <p><input type='submit' value='Submit'></p>

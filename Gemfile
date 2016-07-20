@@ -30,12 +30,13 @@ gem 'rack-google-analytics', :require => false
 
 gem 'omniauth-google-oauth2'
 
-gem 'dotenv'
-
 gem 'twilio-ruby'
+
+gem 'hashie'
 
 group :development do
   gem 'dm-sqlite-adapter'
+  gem 'foreman'
 end
 
 group :test do

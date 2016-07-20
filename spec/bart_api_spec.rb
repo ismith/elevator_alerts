@@ -82,9 +82,9 @@ describe BartApi do
       it { should match_array ['12th St. Oakland Ogawa Plaza Elevator', 'El Cerrito Plaza S.F./Fremont Platform Elevator', 'Coliseum Platform Elevator' ] }
     end
 
-    context 'all in data/elevators.dat' do
+    context 'all in data/bart_elevator_strings.dat' do
       it 'should be able to parse them' do
-        lines = File.readlines(File.expand_path(File.dirname(__FILE__) + '/../data/elevators.dat')).map(&:chomp)
+        lines = File.readlines(File.expand_path(File.dirname(__FILE__) + '/../data/bart_elevator_strings.dat')).map(&:chomp)
         failures = lines.map do |line|
           described_class.parse_data(line) rescue line
         end.reject { |x| x.is_a? Array }

@@ -26,7 +26,7 @@ class Email
     #Keen.publish("email", to: to, subject: subject)
 
     if ENV['NO_EMAIL']
-      puts "Email stub: #{to}, #{subject}, #{body}"
+      puts "Email is currently disabled, or we'd send: #{to}\nsubject:#{subject}\nbody:\n#{body}"
     else
       Pony.mail(:to => to, :subject => subject, :body => body, :headers => headers)
     end
