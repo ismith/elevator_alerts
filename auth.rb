@@ -7,6 +7,8 @@ class Auth
     ],
     :google_oauth2 => [
       :google_oauth2,
+      ENV['GOOGLE_CLIENT_ID'],
+      ENV['GOOGLE_CLIENT_SECRET'],
       { :scope => 'email, openid',
         :prompt => 'select_account',
         :name => 'login' }
