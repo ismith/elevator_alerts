@@ -20,9 +20,9 @@ describe Worker do
 
     expect(Models::Outage.all_open.count).to eql predata.size
 
-    expect(BartApi).to receive(:get_data)
-    expect(BartApi).to receive(:parse_data).and_return(bart_data)
-    expect(MuniApi).to receive(:get_data).and_return(muni_data)
+    allow(BartApi).to receive(:get_data)
+    allow(BartApi).to receive(:parse_data).and_return(bart_data)
+    allow(MuniApi).to receive(:get_data).and_return(muni_data)
   end
 
   # We end with two ended outages (elevator0, elevator2), one that remains open
@@ -50,9 +50,21 @@ describe Worker do
     let(:bart_data) { [] }
     let(:muni_data) { [] }
 
-    it 'should close all the open outages' do
+    it "should not notify (or change DB state) the 1st or 3rd time 'all elevators are in service', but should the 2nd time" do
+      expect(Notifier).to receive(:send_elevator_notifications!).once do |elevators|
+        expect(elevators).not_to be_empty
+      end
+
+      # First run
+      described_class.run!
       expect(Models::Outage.all_open).not_to be_empty
-      subject
+
+      # Second run
+      described_class.run!
+      expect(Models::Outage.all_open).to be_empty
+
+      # Third run
+      described_class.run!
       expect(Models::Outage.all_open).to be_empty
     end
   end
