@@ -27,20 +27,21 @@ class Worker
     existing_count = Models::Elevator.count
 
     # BART
-    data = BartApi.get_data
-    out_elevators = BartApi.parse_data(data).map do |name|
+    bart_data = BartApi.get_data
+    out_elevators = BartApi.parse_data(bart_data).map do |name|
       Models::Elevator.first_or_create(:name => name)
     end
 
     # Muni
-    out_elevators += MuniApi.get_data.map do |name|
+    muni_data = MuniApi.get_data
+    out_elevators += muni_data.map do |name|
       Models::Elevator.first_or_create(:name => name)
     end
 
     total_count = Models::Elevator.count
 
     puts "New elevators: #{total_count - existing_count}."
-    puts "Data: #{data}"
+    puts "Data: #{bart_data}, #{muni_data}"
 
     outages_to_notify = []
 
