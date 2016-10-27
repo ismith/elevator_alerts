@@ -53,7 +53,7 @@ class BartApi
   MATCH_NONE = [
     %r{There are no elevators out of service at this time},
     %r{Attention passengers: All elevators are in service Thank You},
-    %r{^  *$}
+    %r{^ *$}
   ].freeze
   SPLIT = %r{( and |, )}.freeze
 

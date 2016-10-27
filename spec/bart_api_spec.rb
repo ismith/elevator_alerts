@@ -67,8 +67,22 @@ describe BartApi do
       it { should be_empty }
     end
 
-    context 'with empty CDATA (bogus case, seen in wild' do
-      let(:input) { "<![CDATA[                                           ]]>" }
+    context 'with empty string' do
+      let(:input) { "" }
+
+      it { should be_a Array }
+      it { should be_empty }
+    end
+
+    context 'with one space' do
+      let(:input) { " " }
+
+      it { should be_a Array }
+      it { should be_empty }
+    end
+
+    context 'with string of spaces' do
+      let(:input) { "  " }
 
       it { should be_a Array }
       it { should be_empty }
