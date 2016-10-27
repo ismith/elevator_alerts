@@ -53,6 +53,7 @@ class BartApi
   MATCH_NONE = [
     %r{There are no elevators out of service at this time},
     %r{Attention passengers: All elevators are in service Thank You}
+    # Note: string-of-spaces case is handled in .parse_data
   ].freeze
   SPLIT = %r{( and |, )}.freeze
 
@@ -62,6 +63,9 @@ class BartApi
   # and raise a ParseError
   def self.parse_data(data)
     raise ArgumentError unless data.is_a? String
+
+    return [] if data =~ %r{^  *$} # empty string -> all in service
+
     data.gsub!(/ *Thank you.*/, '')
     data.strip!
     data.sub!(/\.$/, '')

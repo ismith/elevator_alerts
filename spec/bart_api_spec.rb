@@ -67,6 +67,20 @@ describe BartApi do
       it { should be_empty }
     end
 
+    context 'with a space' do
+      let(:input) { ' ' }
+
+      it { should be_a Array }
+      it { should be_empty }
+    end
+
+    context 'with string of spaces' do
+      let(:input) { '  ' }
+
+      it { should be_a Array }
+      it { should be_empty }
+    end
+
     context 'with one elevator' do
       let(:input) { 'There is one elevator out of service at this time: Ashby Street Elevator. Thank you.' }
 
