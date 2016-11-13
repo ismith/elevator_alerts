@@ -39,6 +39,40 @@ CREATE VIEW bart_biz_hour_outages AS
        (outages.started_at, COALESCE(outages.ended_at, NOW())) OVERLAPS (bart_biz_hours.open, bart_biz_hours.close)
     ) AS t ;
 
+-- avg outage length
+-- on 2016-11-13:
+-- `select count(*) FROM bart_biz_hour_outages;`: 2598
+-- `select count(id) FROM bart_biz_hour_outages group by id;`: 1912
+CREATE VIEW bart_biz_hour_outage_length AS
+SELECT id, elevator_id, sum(duration) as duration
+FROM bart_biz_hour_outages
+GROUP BY id, elevator_id;
+
+CREATE OR REPLACE VIEW analytics_bart_biz_hour_outage_length AS
+SELECT COALESCE(name, 'ALL') as name, t.*
+FROM (SELECT elevator_id, count(elevator_id), avg(duration), max(duration), min(duration)
+      FROM bart_biz_hour_outage_length
+      GROUP BY elevator_id
+      UNION (SELECT NULL as elevator_id, count(*), avg(duration), max(duration), min(duration)
+             FROM bart_biz_hour_outage_length)) as t
+LEFT JOIN elevators
+ON elevators.id = elevator_id
+ORDER BY avg;
+
+CREATE OR REPLACE VIEW analytics_bart_outage_length AS
+SELECT COALESCE(name, 'ALL') as name, t.*
+FROM (SELECT elevator_id, count(elevator_id), avg(duration), max(duration), min(duration)
+      FROM (SELECT elevator_id, (ended_at - started_at) as duration
+            FROM outages) as u1
+      GROUP BY elevator_id
+      UNION (SELECT NULL as elevator_id, count(*), avg(duration), max(duration), min(duration)
+             FROM (SELECT id, NULL, (ended_at - started_at) as duration
+                   FROM outages) as u2)) as t
+LEFT JOIN elevators
+ON elevators.id = elevator_id
+WHERE name NOT LIKE 'Muni%'
+ORDER BY avg;
+
 -- for a given elevator, sum the duration of its outages, and generate a
 -- probabilty & percentage for each
  CREATE VIEW bart_biz_hour_elevator_outages AS
