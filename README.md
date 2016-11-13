@@ -66,6 +66,7 @@ heroku addons:create sendgrid:starter # 400/day
 heroku addons:create rollbar:free # 3000/mo, 30 days retention
 heroku addons:create deployhooks:http [redacted] # you can get this from https://rollbar.com/elevatoralerts/elevatoralerts/deploys/
 heroku addons:create scheduler:standard # then run `heroku addons:open scheduler`, and add `bin/refresh_materialized_views.sh`, to be run daily
+heroku addons:create papertrail:fixa # $7/mo, for 365 days of archiving
 
 Note:
 Not using heroku scheduler for polling because it can only run hourly or every 10 minutes,
