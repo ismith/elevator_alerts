@@ -1,5 +1,5 @@
  [![Build Status](https://travis-ci.org/ismith/elevator_alerts.svg?branch=master)](https://travis-ci.org/ismith/elevator_alerts)
- 
+
 Local Setup
 ===========
 The app consists of two parts, a webapp and a worker.  Both are defined in the
@@ -65,7 +65,10 @@ heroku addons:create heroku-postgres:hobby-dev # 7k records
 heroku addons:create sendgrid:starter # 400/day
 heroku addons:create rollbar:free # 3000/mo, 30 days retention
 heroku addons:create deployhooks:http [redacted] # you can get this from https://rollbar.com/elevatoralerts/elevatoralerts/deploys/
+heroku addons:create scheduler:standard # then run `heroku addons:open scheduler`, and add `bin/refresh_materialized_views.sh`, to be run daily
 
 Note:
-Not using heroku scheduler because it can only run hourly or every 10 minutes,
-and I'm aiming for ~1/minute.
+Not using heroku scheduler for polling because it can only run hourly or every 10 minutes,
+and I'm aiming for ~1/minute.  I am using it to do a daily refresh of the
+`bart_biz_hours view`, though (which is used for analytics and not for the core
+app).

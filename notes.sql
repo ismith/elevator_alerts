@@ -9,7 +9,7 @@ WHERE day::date <= now()::date + '1 day'::interval;
 -- On sunday, 8-midnight
 -- On saturday, 6-midnight
 -- On weekdays, 4-midnight
-CREATE OR REPLACE VIEW bart_biz_hours AS
+CREATE MATERIALIZED VIEW bart_biz_hours AS
 SELECT
   timestamptz (day || open_offset || ' US/Pacific')::timestamp as open,
   timestamptz (day || ' 24:00:00 US/Pacific')::timestamp as close,
@@ -212,6 +212,7 @@ CREATE VIEW station_outages AS
      ORDER BY percentage DESC ) AS u;
 
 -- Add some analytics for funsies
+CREATE VIEW analytics_station_outages AS
 SELECT NULLIF(GREATEST(row_number() OVER () - 2, 0), 0) AS rank,
        station_id, name, station_type, probability, percentage
 FROM
@@ -229,8 +230,9 @@ FROM
   ORDER BY sort_order ASC, probability DESC) AS u;
 
 -- station-pair analytics
+CREATE VIEW analytics_station_pairs AS
 SELECT row_number() OVER (), *
-FROM (SELECT station_outages.name, u.name,
+FROM (SELECT station_outages.name as name1, u.name as name2,
                ROUND(1 - (1 - station_outages.probability)*(1-u.probability),3) AS probability,
                ROUND((1 - (1 - station_outages.probability)*(1-u.probability))*100,1) AS percentage
       FROM station_outages
