@@ -71,11 +71,11 @@ CREATE VIEW series_street_outages AS
   WHERE station_id IN (2, 3, 4, 9, 14, 18, 24, 27, 32, 34)
   AND   name LIKE '%Street%';
 
-CREATE VIEW series_platform_outages AS
+CREATE OR REPLACE VIEW series_platform_outages AS
   SELECT station_id, outages.* from outages
   JOIN elevators ON outages.elevator_id = elevators.id
   WHERE station_id IN (2, 3, 4, 9, 14, 18, 24, 27, 32, 34)
-  AND   name LIKE '%Street%';
+  AND   name NOT LIKE '%Street%';
 
 CREATE VIEW series_overlapping_outages AS
   SELECT series_street_outages.station_id,
