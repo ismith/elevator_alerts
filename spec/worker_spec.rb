@@ -46,6 +46,34 @@ describe Worker do
     subject
   end
 
+  context 'if one of the received elevators is an alias' do
+    before :each do
+      orig_elevator = Models::Elevator.first_or_create(:name => 'orig_elevator')
+      # We create an alias elevator; this is the one that is in our input data,
+      # not the orig_elevator
+      Models::Elevator.first_or_create(:name => 'alias elevator', :alias_id => orig_elevator.id)
+
+      allow(BartApi).to receive(:get_data)
+      allow(BartApi).to receive(:parse_data).and_return(bart_data)
+      allow(MuniApi).to receive(:get_data).and_return(muni_data)
+    end
+
+    let(:bart_data) { ['alias elevator'] }
+    let(:muni_data) { [] }
+    let(:predata) { [] }
+
+    it 'should look up the original elevator' do
+      # It'll notify for the original elevator, not the alias
+      expect(Notifier).to receive(:send_elevator_notifications!) do |elevators|
+        expect(elevators.map(&:name)).to match_array('orig_elevator')
+      end
+
+      subject
+
+      expect(Models::Outage.all_open.to_a.map(&:elevator).map(&:name)).to match_array('orig_elevator')
+    end
+  end
+
   context 'if there are no out elevators' do
     let(:bart_data) { [] }
     let(:muni_data) { [] }

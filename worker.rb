@@ -28,11 +28,23 @@ class Worker
 
     # BART
     bart_data = BartApi.get_data
-    out_elevators = BartApi.parse_data(bart_data).map do |name|
+    raw_out_elevators = BartApi.parse_data(bart_data).map do |name|
       Models::Elevator.first_or_create(:name => name)
     end
 
-    # Muni
+    # Any elevators that are aren't aliases - that is, alias_id is nil - are in
+    # the out_elevators set
+    out_elevators = raw_out_elevators.reject(&:alias_id)
+
+    # Add the 'original' for any elevators that have an alias_id
+    out_elevators += raw_out_elevators.select(&:alias_id)
+      .map {|raw_e| Models::Elevator.first(:id => raw_e.alias_id) }
+
+    out_elevators.uniq!
+
+    # Muni - not handling alias code here because:
+    # - unlike BART, we haven't needed it yet, and
+    # - it's a bit of an ugly hack
     muni_data = MuniApi.get_data
     out_elevators += muni_data.map do |name|
       Models::Elevator.first_or_create(:name => name)
