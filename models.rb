@@ -45,6 +45,7 @@ module Models
 
     property :id, Serial, :key => true
     property :name, String, :index => true, :unique => true
+    property :alias_id, Integer, :required => false
 
     #has n, :systems, :through => :stations
     has n, :outages, :through => Resource

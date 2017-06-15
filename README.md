@@ -84,3 +84,11 @@ elevator_alerts.sql
 
 And remove any user not found in reports - (1,9,10,12,14,19,24,26), as well as
 those users' SMS numbers.
+
+Handling Dupe Elevator Names
+============================
+The `elevators` table contains an `alias_id` column.  If this id is set, then
+when that elevator is marked in or out by the API, we'll convert it to the
+original elevator (whose id is `alias_id`).
+
+Maintenance of `alias_id` values is by-hand.
