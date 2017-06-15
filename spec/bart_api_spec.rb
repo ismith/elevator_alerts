@@ -95,6 +95,13 @@ describe BartApi do
       it { should match_array ['Ashby Street Elevator'] }
     end
 
+    context 'with One - capitalized One - elevator' do
+      let(:input) { 'There is One elevator out of service at this time: Colma SF/East Bay Platform' }
+
+      it { should be_a Array }
+      it { should match_array ['Colma SF/East Bay Platform'] }
+    end
+
     context 'with three elevators' do
       let(:input) { 'There are three elevators out of service at this time: 12th St. Oakland Ogawa Plaza Elevator, El Cerrito Plaza S.F./Fremont Platform Elevator and Coliseum Platform Elevator.' }
 

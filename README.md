@@ -73,3 +73,14 @@ Not using heroku scheduler for polling because it can only run hourly or every 1
 and I'm aiming for ~1/minute.  I am using it to do a daily refresh of the
 `bart_biz_hours view`, though (which is used for analytics and not for the core
 app).
+
+DB backups
+==========
+```
+pg_dump $DATABASE_URL \
+-t elevators -t elevator_outages -t outages -t reports -t stations -t users >
+elevator_alerts.sql
+```
+
+And remove any user not found in reports - (1,9,10,12,14,19,24,26), as well as
+those users' SMS numbers.
