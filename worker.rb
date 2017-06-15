@@ -5,6 +5,7 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'models'
 require 'bart_api'
 require 'muni_api'
+require 'chicago_api'
 require 'notifier'
 require 'my_rollbar'
 
@@ -50,10 +51,16 @@ class Worker
       Models::Elevator.first_or_create(:name => name)
     end
 
+    # Chicago
+    chicago_data = ChicagoApi.get_data
+    out_elevators += chicago_data.map do |name|
+      Models::Elevator.first_or_create(:name => name)
+    end
+
     total_count = Models::Elevator.count
 
     puts "New elevators: #{total_count - existing_count}."
-    puts "Data: #{bart_data}, #{muni_data}"
+    puts "Data: #{bart_data}, #{muni_data}", "#{chicago_data}"
 
     outages_to_notify = []
 
