@@ -43,16 +43,16 @@ class BartApi
   end
 
   MATCH_SINGLE = [
-    %r{There is (one) elevator out of service at this time: (.*)\.?$},
-    %r{The elevator at (.*) is out of service$}
+    %r{There is (one) elevator out of service at this time: (.*)\.?$}i,
+    %r{The elevator at (.*) is out of service$}i
   ].freeze
   MATCH_MULTIPLE = [
-    %r{There are ([^ ]*) elevators out of service at this time: (.*)\.?$},
-    %r{The following elevators are out of service: (.*)}
+    %r{There are ([^ ]*) elevators out of service at this time: (.*)\.?$}i,
+    %r{The following elevators are out of service: (.*)}i
   ].freeze
   MATCH_NONE = [
-    %r{There are no elevators out of service at this time},
-    %r{Attention passengers: All elevators are in service Thank You},
+    %r{There are no elevators out of service at this time}i,
+    %r{Attention passengers: All elevators are in service Thank You}i,
     %r{^ *$}
   ].freeze
   SPLIT = %r{( and |, )}.freeze
